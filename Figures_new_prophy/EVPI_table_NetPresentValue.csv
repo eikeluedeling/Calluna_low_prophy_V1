@@ -1,0 +1,26 @@
+"","thold","EVPI_do","EVPI_dont"
+"fungus_possibility_R",0.0782430692012961,786.733966751504,538357.55799096
+"discount_rate",NA,0,0
+"years",no variation,0,0
+"production_area",no variation,0,0
+"infection_risk",NA,0,0
+"plants_per_ha",NA,0,0
+"total_failure_risk",no relationship,0,0
+"fungus_possibility_N",NA,0,0
+"disease_expansion_factor_N",NA,0,0
+"disease_expansion_factor_R",NA,0,0
+"detection_factor_N",NA,0,0
+"detection_factor_R",NA,0,0
+"fungus_fight_effect_N",NA,0,0
+"fungus_fight_effect_R",NA,0,0
+"var_CV",no relationship,0,0
+"number_yearly_prophy_application_N",NA,0,0
+"number_yearly_prophy_application_R",NA,0,0
+"effect_one_prophy_application",NA,0,0
+"effect_two_prophy_application",no relationship,0,0
+"effect_three_prophy_application",no relationship,0,0
+"effect_four_prophy_application",no relationship,0,0
+"effect_five_prophy_application",no relationship,0,0
+"effect_six_prophy_application",no relationship,0,0
+"effect_seven_prophy_application",no relationship,0,0
+"effect_eight_prophy_application",no relationship,0,0

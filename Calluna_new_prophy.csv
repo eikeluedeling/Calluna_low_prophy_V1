@@ -1,0 +1,26 @@
+General variables,Description,lower,median,upper,distribution,variable,
+,Discountrate,4,,10,posnorm,discount_rate,Discount rate
+,,10,,10,const,years,Zeitraum um Einsparungen nach 10 Jahren darzustellen
+,,4,,4,const,production_area,Größe des Produktionssystems in Hektar
+,,0.05,,0.95,tnorm_0_1,infection_risk,Generelles Infektionsrisiko in %
+,,160000,,200000,posnorm,plants_per_ha,Anzahl der Pflanzen pro Hektar
+,,0.1,,0.3,tnorm_0_1,total_failure_risk,Risiko eines Totalausfalls
+,,0.1,,0.5,tnorm_0_1,fungus_possibility_N,Wahrscheinlichkeit des Ausbruchs von Pilzkrankheiten bei normaler Applikation
+,,0.1,,0.6,tnorm_0_1,fungus_possibility_R,Wahrscheinlichkeit des Ausbruchs von Pilzkrankheiten bei reduzierter Applikation
+,,0.01,,0.05,tnorm_0_1,disease_expansion_factor_N,Wie groß ist der Pflanzenanteil der nach einer direkten Krankheitsbekämpfung erneut krank wird? (in %)
+,,0.01,,0.1,tnorm_0_1,disease_expansion_factor_R,Wie groß ist der Pflanzenanteil der nach einer direkten Krankheitsbekämpfung erneut krank wird? (in %)
+,,0.1,,0.3,tnorm_0_1,detection_factor_N,Normale Monitoring Rate wieviel % der Pflanzen als krank  identifiziert werden
+,,0.1,,0.8,tnorm_0_1,detection_factor_R,Optimierte Monitoring Rate wieviel % der Pflanzen als krank  identifiziert werden
+,,0.1,,0.7,tnorm_0_1,fungus_fight_effect_N,Effekt einer direkten Pilzbekämpfung auf die erkrankten Pflanzen in % bei normaler Kultivierung
+,,0.1,,0.7,tnorm_0_1,fungus_fight_effect_R,Effekt einer direkten Pilzbekämpfung auf die erkrankten Pflanzen in % bei reduzierter prophylaktischer Applikation
+,,5,,20,posnorm,var_CV,desired coefficient of variation in percent
+,,10,,30,posnorm,number_yearly_prophy_application_N,Wie oft wird pro Jahr pro Hektar prophylaktisch gespritzt?
+,,2,,6,posnorm,number_yearly_prophy_application_R,Wie oft würde man reduziert prophylaktisch pro Jahr spritzen?
+,,0.2,,0.3,tnorm_0_1,effect_one_prophy_application,Krankheits-Reduzierungspotential von einer prophylaktischen Applikationen pro Monat (in %)
+,,0.3,,0.4,tnorm_0_1,effect_two_prophy_application,Krankheits-Reduzierungspotential von zwei prophylaktischen Applikationen pro Monat (in %)
+,,0.4,,0.5,tnorm_0_1,effect_three_prophy_application,Krankheits-Reduzierungspotential von drei prophylaktischen Applikationen pro Monat (in %)
+,,0.5,,0.6,tnorm_0_1,effect_four_prophy_application,Krankheits-Reduzierungspotential von vier prophylaktischen Applikationen pro Monat (in %)
+,,0.6,,0.7,tnorm_0_1,effect_five_prophy_application,Krankheits-Reduzierungspotential von fünf prophylaktischen Applikationen pro Monat (in %)
+,,0.7,,0.8,tnorm_0_1,effect_six_prophy_application,Krankheits-Reduzierungspotential von sechs prophylaktischen Applikationen pro Monat (in %)
+,,0.8,,0.9,tnorm_0_1,effect_seven_prophy_application,Krankheits-Reduzierungspotential von sieben prophylaktischen Applikationen pro Monat (in %)
+,,0.9,,0.99,tnorm_0_1,effect_eight_prophy_application,Krankheits-Reduzierungspotential von acht prophylaktischen Applikationen pro Monat (in %)

@@ -1,0 +1,26 @@
+variable,label
+discount_rate,Discount rate
+years,Zeitraum um Einsparungen nach 10 Jahren darzustellen
+production_area,Größe des Produktionssystems in Hektar
+infection_risk,Generelles Infektionsrisiko in %
+plants_per_ha,Anzahl der Pflanzen pro Hektar
+total_failure_risk,Risiko eines Totalausfalls
+fungus_possibility_N,Wahrscheinlichkeit des Ausbruchs von Pilzkrankheiten bei normaler Applikation
+fungus_possibility_R,Wahrscheinlichkeit des Ausbruchs von Pilzkrankheiten bei reduzierter Applikation
+disease_expansion_factor_N,Wie groß ist der Pflanzenanteil der nach einer direkten Krankheitsbekämpfung erneut krank wird? (in %)
+disease_expansion_factor_R,Wie groß ist der Pflanzenanteil der nach einer direkten Krankheitsbekämpfung erneut krank wird? (in %)
+detection_factor_N,Normale Monitoring Rate wieviel % der Pflanzen als krank  identifiziert werden
+detection_factor_R,Optimierte Monitoring Rate wieviel % der Pflanzen als krank  identifiziert werden
+fungus_fight_effect_N,Effekt einer direkten Pilzbekämpfung auf die erkrankten Pflanzen in % bei normaler Kultivierung
+fungus_fight_effect_R,Effekt einer direkten Pilzbekämpfung auf die erkrankten Pflanzen in % bei reduzierter prophylaktischer Applikation
+var_CV,desired coefficient of variation in percent
+number_yearly_prophy_application_N,Wie oft wird pro Jahr pro Hektar prophylaktisch gespritzt?
+number_yearly_prophy_application_R,Wie oft würde man reduziert prophylaktisch pro Jahr spritzen?
+effect_one_prophy_application,Krankheits-Reduzierungspotential von einer prophylaktischen Applikationen pro Monat (in %)
+effect_two_prophy_application,Krankheits-Reduzierungspotential von zwei prophylaktischen Applikationen pro Monat (in %)
+effect_three_prophy_application,Krankheits-Reduzierungspotential von drei prophylaktischen Applikationen pro Monat (in %)
+effect_four_prophy_application,Krankheits-Reduzierungspotential von vier prophylaktischen Applikationen pro Monat (in %)
+effect_five_prophy_application,Krankheits-Reduzierungspotential von fünf prophylaktischen Applikationen pro Monat (in %)
+effect_six_prophy_application,Krankheits-Reduzierungspotential von sechs prophylaktischen Applikationen pro Monat (in %)
+effect_seven_prophy_application,Krankheits-Reduzierungspotential von sieben prophylaktischen Applikationen pro Monat (in %)
+effect_eight_prophy_application,Krankheits-Reduzierungspotential von acht prophylaktischen Applikationen pro Monat (in %)
