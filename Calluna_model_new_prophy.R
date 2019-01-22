@@ -150,7 +150,7 @@ Calluna_model_new_prophy <- function(x, varnames){
   
   
   
-  ####Simulate infection and plant losses for REDUCED prophylactic application####
+  #Simulate infection and plant losses for REDUCED prophylactic application####
   infected_plant_number_R <- original_plant_number * risk_per_month
   not_infected_plants_after_prophy_R <- weather_arguments_for_infection
   symptomatic_plants_R <- weather_arguments_for_infection
@@ -204,7 +204,7 @@ Calluna_model_new_prophy <- function(x, varnames){
   
   #cashflow and results 
   cashflow <- benefits - costs
-  NPV <- discount(cashflow, discount_rate = discount_rate, TRUE)
+  NPV <- DecisionSupport::discount(x= cashflow, discount_rate = discount_rate, calculate_NPV = TRUE)
   
   
   return(list(NetPresentValue = NPV))
