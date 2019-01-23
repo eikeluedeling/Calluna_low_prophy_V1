@@ -6,18 +6,17 @@ library(decisionSupport)
 library(tidyverse)
 
 setwd("C:/Users/ZEF/Desktop/Calluna_Folder")
-
+#avoid using 'new' in your titles. Imagine that we will look back at this long after your PhD for ideas, when we both have grey beards. It will no longer be 'new'
 Calluna_model_new_prophy <- function(x, varnames){
   
   #Calculate the plant amount of whole production area
   original_plant_number <- production_area * plants_per_ha
   
-  #Define risky months                
+  #Define risky months (May to August)                
   weather_arguments_for_infection <- c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)
   
   #Simulate the infection risk for each month under uncertainty
   #risk_per_month <- runif(4, 0, (infection_risk>=0)) * weather_arguments_for_infection 
-  #add more notes in the file mate
   
   risk_per_month <- vv(infection_risk, var_CV, 12)* weather_arguments_for_infection
   risk_per_month <- sapply(risk_per_month, function(x) max(c(min(c(1,x)),0)))
