@@ -21,9 +21,9 @@ Calluna_model_new_prophy <- function(x, varnames){
   risk_per_month <- vv(infection_risk, var_CV, 12)* weather_arguments_for_infection
   risk_per_month <- sapply(risk_per_month, function(x) max(c(min(c(1,x)),0)))
   
-  #Settings for factors in % so that they will not be higher 1 or lower
-  #random values are elected out of pre-defined intervalls
-  #For NORMAL prophylactic application
+  #Settings for factors in % so that they will not be higher or lower than 1
+  #random values are selected out of pre-defined intervalls
+  #Calculate risks for NORMAL prophylactic application
   fungus_possibility <- vv(fungus_possibility_N, var_CV, 12)* weather_arguments_for_infection
   fungus_possibility_N <- sapply(fungus_possibility, function(x) max(c(min(c(1,x)),0)))
   
