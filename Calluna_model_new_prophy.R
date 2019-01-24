@@ -7,7 +7,7 @@ library(tidyverse)
 
 setwd("C:/Users/ZEF/Desktop/Calluna_Folder")
 #avoid using 'new' in your titles. Imagine that we will look back at this long after your PhD for ideas, when we both have grey beards. It will no longer be 'new'
-Calluna_model_new_prophy <- function(x, varnames){
+Calluna_low_prophy_V1 <- function(x, varnames){
   
   #Calculate the plant amount of whole production area
   original_plant_number <- production_area * plants_per_ha
@@ -71,14 +71,15 @@ Calluna_model_new_prophy <- function(x, varnames){
   
   #Define effect of normal prophylactic pesticide application (potential to reduce fungus onset)
   #Estimated effect of fungus reduce potential are interlinked with each number of application per month   
-  effect_application_N <- replace(effect_application_N, effect_application_N==1, effect_one_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N==2, effect_two_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N==3, effect_three_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N==4, effect_four_prophy_application) 
-  effect_application_N <- replace(effect_application_N, effect_application_N==5, effect_five_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N==6, effect_six_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N==7, effect_seven_prophy_application)
-  effect_application_N <- replace(effect_application_N, effect_application_N>=8, effect_eight_prophy_application)
+  effect_application_N <- effect_application_N %>%
+  replace(., effect_application_N==1, effect_one_prophy_application) %>%
+  replace(., effect_application_N==2, effect_two_prophy_application) %>%
+  replace(., effect_application_N==3, effect_three_prophy_application) %>%
+  replace(., effect_application_N==4, effect_four_prophy_application) %>%
+  replace(., effect_application_N==5, effect_five_prophy_application) %>%
+  replace(., effect_application_N==6, effect_six_prophy_application) %>%
+  replace(., effect_application_N==7, effect_seven_prophy_application) %>%
+  replace(., effect_application_N>=8, effect_eight_prophy_application)
   
   
   #For REDUCED prophylactic application (number_yearly_prophy_application_R)
@@ -87,15 +88,15 @@ Calluna_model_new_prophy <- function(x, varnames){
   effect_application_R <- effect_application_R * weather_arguments_for_infection
   
   #Define effect of reduced prophylactic pesticide application (potential to reduce fungus onset)
-  effect_application_R <- replace(effect_application_R, effect_application_R==1, effect_one_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R==2, effect_two_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R==3, effect_three_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R==4, effect_four_prophy_application)  
-  effect_application_R <- replace(effect_application_R, effect_application_R==5, effect_five_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R==6, effect_six_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R==7, effect_seven_prophy_application)
-  effect_application_R <- replace(effect_application_R, effect_application_R>=8, effect_eight_prophy_application)
-  
+  effect_application_R <- effect_application_R %>%
+    replace(., effect_application_R==1, effect_one_prophy_application) %>%
+    replace(., effect_application_R==2, effect_two_prophy_application) %>%
+    replace(., effect_application_R==3, effect_three_prophy_application) %>%
+    replace(., effect_application_R==4, effect_four_prophy_application) %>%
+    replace(., effect_application_R==5, effect_five_prophy_application) %>%
+    replace(., effect_application_R==6, effect_six_prophy_application) %>%
+    replace(., effect_application_R==7, effect_seven_prophy_application) %>%
+    replace(., effect_application_R>=8, effect_eight_prophy_application)
   
   
   #Simulate different infection risks per month per quarter of the production system
@@ -226,7 +227,7 @@ dir.create(figures_folder)
 
 decisionSupport(input_table, #input file with estimates
                 results_folder, #output folder
-                write_table = TRUE, Calluna_model_new_prophy, 10000,
+                write_table = TRUE, Calluna_low_prophy_V1, 10000,
                 functionSyntax = "plainNames")
 
 
