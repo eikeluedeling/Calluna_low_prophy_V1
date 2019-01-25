@@ -1,12 +1,11 @@
-
-library(signal)
-library(DAutilities)
-library(Surrogate)
 library(decisionSupport)
-library(tidyverse)
+library(DAutilities)
+library(signal)
 library(dplyr)
+library(Surrogate)
+library(MASS)
 
-setwd("C:/Users/ZEF/Desktop/Calluna_Folder") 
+setwd("C:/Users/ZEF/Documents/GitHub/Calluna_prophy_new_model") 
 
 Calluna_low_prophy_V1 <- function(x, varnames){
   
@@ -54,7 +53,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   #in accidentally selected application quantity per month
   
   need.random.integers <- function(a,b,n,k){
-  #finds n random integers in range a:b which sum to k
+    #finds n random integers in range a:b which sum to k
     while(TRUE){
       x <- sample(1:(k - n*a),n-1, replace = TRUE)
       x <- sort(x)
@@ -72,14 +71,14 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   #Define effect of normal prophylactic pesticide application (potential to reduce fungus onset)
   #Estimated effect of fungus reduce potential are interlinked with each number of application per month   
   effect_application_N <- effect_application_N %>%
-  replace(., effect_application_N==1, effect_one_prophy_application) %>%
-  replace(., effect_application_N==2, effect_two_prophy_application) %>%
-  replace(., effect_application_N==3, effect_three_prophy_application) %>%
-  replace(., effect_application_N==4, effect_four_prophy_application) %>%
-  replace(., effect_application_N==5, effect_five_prophy_application) %>%
-  replace(., effect_application_N==6, effect_six_prophy_application) %>%
-  replace(., effect_application_N==7, effect_seven_prophy_application) %>%
-  replace(., effect_application_N>=8, effect_eight_prophy_application)
+    replace(., effect_application_N==1, effect_one_prophy_application) %>%
+    replace(., effect_application_N==2, effect_two_prophy_application) %>%
+    replace(., effect_application_N==3, effect_three_prophy_application) %>%
+    replace(., effect_application_N==4, effect_four_prophy_application) %>%
+    replace(., effect_application_N==5, effect_five_prophy_application) %>%
+    replace(., effect_application_N==6, effect_six_prophy_application) %>%
+    replace(., effect_application_N==7, effect_seven_prophy_application) %>%
+    replace(., effect_application_N>=8, effect_eight_prophy_application)
   
   
   #For REDUCED prophylactic application (number_yearly_prophy_application_R)
@@ -110,45 +109,80 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   detected_plants_after_monitoring_N <- weather_arguments_for_infection
   healthy_plants_after_fungus_fight_N <- weather_arguments_for_infection
   getting_again_sick_plants_N <- weather_arguments_for_infection
-    
   
-  ####Simulate infection and plant losses for NORMAL prophylactic application####
   for (i in 2:length(infected_plant_number_N)){
-    for (j in 2:length(not_infected_plants_after_prophy_N)) {
-        for (k in 2:length(symptomatic_plants_N)) {
-          for (l in 2:length(detected_plants_after_monitoring_N)) {
-            for (m in 2:length(getting_again_sick_plants_N)) {
-              for (n in 2:length(healthy_plants_after_fungus_fight_N)) {
+    infected_plant_number_N[i] <- infected_plant_number_N[i-1] + risk_per_month[i]*
+      (original_plant_number - infected_plant_number_N[i-1])}
   
-  infected_plant_number_N[i] <- infected_plant_number_N[i-1] + risk_per_month[i]*
-    (original_plant_number - infected_plant_number_N[i-1])
-  
-  not_infected_plants_after_prophy_N[j] <- not_infected_plants_after_prophy_N[j-1] + effect_application_N[j]*
-    (infected_plant_number_N[j] - not_infected_plants_after_prophy_N[j-1])
+  for (j in 2:length(not_infected_plants_after_prophy_N)) {
+    not_infected_plants_after_prophy_N[j] <- not_infected_plants_after_prophy_N[j-1] + effect_application_N[j]*
+      (infected_plant_number_N[j] - not_infected_plants_after_prophy_N[j-1])}
   
   still_infected_plants_N <- infected_plant_number_N - not_infected_plants_after_prophy_N
   
-  symptomatic_plants_N[k] <- symptomatic_plants_N[k-1] + fungus_possibility_N[k]*
-                             (still_infected_plants_N[k] - symptomatic_plants_N[k-1]) 
+  for (k in 2:length(symptomatic_plants_N)) {
+    symptomatic_plants_N[k] <- symptomatic_plants_N[k-1] + fungus_possibility_N[k]*
+      (still_infected_plants_N[k] - symptomatic_plants_N[k-1])}
   
-  detected_plants_after_monitoring_N[l] <- detected_plants_after_monitoring_N[l-1] + detection_factor_N[l]*
-                                         (symptomatic_plants_N[l] - detected_plants_after_monitoring_N[l-1])
+  for (l in 2:length(detected_plants_after_monitoring_N)) {
+    detected_plants_after_monitoring_N[l] <- detected_plants_after_monitoring_N[l-1] + detection_factor_N[l]*
+      (symptomatic_plants_N[l] - detected_plants_after_monitoring_N[l-1])}
   
   symptomatic_plants_after_monitoring_N <- symptomatic_plants_N - detected_plants_after_monitoring_N
   
-  getting_again_sick_plants_N[m] <- getting_again_sick_plants_N[m-1] + disease_expansion_factor_N[m]*
-                                 (symptomatic_plants_after_monitoring_N[m] - getting_again_sick_plants_N[m-1])
+  for (m in 2:length(getting_again_sick_plants_N)) {
+    getting_again_sick_plants_N[m] <- getting_again_sick_plants_N[m-1] + disease_expansion_factor_N[m]*
+      (symptomatic_plants_after_monitoring_N[m] - getting_again_sick_plants_N[m-1])}
   
   all_symptomatic_plants_N <- symptomatic_plants_after_monitoring_N + getting_again_sick_plants_N
   
-  healthy_plants_after_fungus_fight_N[n] <- healthy_plants_after_fungus_fight_N[n-1] + fungus_fight_effect_N[n]*
-                                         (all_symptomatic_plants_N[n] - healthy_plants_after_fungus_fight_N[n-1])
+  for (n in 2:length(healthy_plants_after_fungus_fight_N)) {
+    healthy_plants_after_fungus_fight_N[n] <- healthy_plants_after_fungus_fight_N[n-1] + fungus_fight_effect_N[n]*
+      (all_symptomatic_plants_N[n] - healthy_plants_after_fungus_fight_N[n-1])}
   
   final_fungus_infected_plants_N <- all_symptomatic_plants_N[12] - healthy_plants_after_fungus_fight_N[12]
   
   direct_plant_losses_N <- detected_plants_after_monitoring_N[12]
   
-  actual_saleable_Callunas_N <- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)}}}}}}
+  actual_saleable_Callunas_N <- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)
+  
+  ####Simulate infection and plant losses for NORMAL prophylactic application####
+  #for (i in 2:length(infected_plant_number_N)){
+  #  for (j in 2:length(not_infected_plants_after_prophy_N)) {
+  #      for (k in 2:length(symptomatic_plants_N)) {
+  #        for (l in 2:length(detected_plants_after_monitoring_N)) {
+  #          for (m in 2:length(getting_again_sick_plants_N)) {
+  #            for (n in 2:length(healthy_plants_after_fungus_fight_N)) {
+  
+  #infected_plant_number_N[i] <- infected_plant_number_N[i-1] + risk_per_month[i]*
+  #  (original_plant_number - infected_plant_number_N[i-1])
+  
+  #not_infected_plants_after_prophy_N[j] <- not_infected_plants_after_prophy_N[j-1] + effect_application_N[j]*
+  #  (infected_plant_number_N[j] - not_infected_plants_after_prophy_N[j-1])
+  
+  #still_infected_plants_N <- infected_plant_number_N - not_infected_plants_after_prophy_N
+  
+  #symptomatic_plants_N[k] <- symptomatic_plants_N[k-1] + fungus_possibility_N[k]*
+  #                           (still_infected_plants_N[k] - symptomatic_plants_N[k-1]) 
+  
+  #detected_plants_after_monitoring_N[l] <- detected_plants_after_monitoring_N[l-1] + detection_factor_N[l]*
+  #                                       (symptomatic_plants_N[l] - detected_plants_after_monitoring_N[l-1])
+  
+  #symptomatic_plants_after_monitoring_N <- symptomatic_plants_N - detected_plants_after_monitoring_N
+  
+  #getting_again_sick_plants_N[m] <- getting_again_sick_plants_N[m-1] + disease_expansion_factor_N[m]*
+  #                               (symptomatic_plants_after_monitoring_N[m] - getting_again_sick_plants_N[m-1])
+  
+  #all_symptomatic_plants_N <- symptomatic_plants_after_monitoring_N + getting_again_sick_plants_N
+  
+  #healthy_plants_after_fungus_fight_N[n] <- healthy_plants_after_fungus_fight_N[n-1] + fungus_fight_effect_N[n]*
+  #                                       (all_symptomatic_plants_N[n] - healthy_plants_after_fungus_fight_N[n-1])
+  
+  #final_fungus_infected_plants_N <- all_symptomatic_plants_N[12] - healthy_plants_after_fungus_fight_N[12]
+  
+  #direct_plant_losses_N <- detected_plants_after_monitoring_N[12]
+  
+  #actual_saleable_Callunas_N <- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)}}}}}}
   
   
   
@@ -160,43 +194,79 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   healthy_plants_after_fungus_fight_R <- weather_arguments_for_infection
   getting_again_sick_plants_R <- weather_arguments_for_infection
   
-  ####Simulate infection and plant losses for REDUCED prophylactic application####
   for (i in 2:length(infected_plant_number_R)){
-    for (j in 2:length(not_infected_plants_after_prophy_R)) {
-      for (k in 2:length(symptomatic_plants_R)) {
-        for (l in 2:length(detected_plants_after_monitoring_R)) {
-          for (m in 2:length(getting_again_sick_plants_R)) {
-            for (n in 2:length(healthy_plants_after_fungus_fight_R)) {
-              
-              infected_plant_number_R[i] <- infected_plant_number_R[i-1] + risk_per_month[i]*
-                (original_plant_number - infected_plant_number_R[i-1])
-              
-              not_infected_plants_after_prophy_R[j] <- not_infected_plants_after_prophy_R[j-1] + effect_application_R[j]*
-                (infected_plant_number_R[j] - not_infected_plants_after_prophy_R[j-1])
-              
-              still_infected_plants_R <- infected_plant_number_R - not_infected_plants_after_prophy_R
-              
-              symptomatic_plants_R[k] <- symptomatic_plants_R[k-1] + fungus_possibility_R[k]*
-                (still_infected_plants_R[k] - symptomatic_plants_R[k-1]) 
-              
-              detected_plants_after_monitoring_R[l] <- detected_plants_after_monitoring_R[l-1] + detection_factor_R[l]*
-                (symptomatic_plants_R[l] - detected_plants_after_monitoring_R[l-1])
-              
-              symptomatic_plants_after_monitoring_R <- symptomatic_plants_R - detected_plants_after_monitoring_R
-              
-              getting_again_sick_plants_R[m] <- getting_again_sick_plants_R[m-1] + disease_expansion_factor_R[m]*
-                (symptomatic_plants_after_monitoring_R[m] - getting_again_sick_plants_R[m-1])
-              
-              all_symptomatic_plants_R <- symptomatic_plants_after_monitoring_R + getting_again_sick_plants_R
-              
-              healthy_plants_after_fungus_fight_R[n] <- healthy_plants_after_fungus_fight_R[n-1] + fungus_fight_effect_R[n]*
-                (all_symptomatic_plants_R[n] - healthy_plants_after_fungus_fight_R[n-1])
-              
-              final_fungus_infected_plants_R <- all_symptomatic_plants_R[12] - healthy_plants_after_fungus_fight_R[12]
-              
-              direct_plant_losses_R <- detected_plants_after_monitoring_R[12]
-              
-              actual_saleable_Callunas_R <- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)}}}}}}
+    infected_plant_number_R[i] <- infected_plant_number_R[i-1] + risk_per_month[i]*
+      (original_plant_number - infected_plant_number_R[i-1])}
+  
+  for (j in 2:length(not_infected_plants_after_prophy_R)) {
+    not_infected_plants_after_prophy_R[j] <- not_infected_plants_after_prophy_R[j-1] + effect_application_R[j]*
+      (infected_plant_number_R[j] - not_infected_plants_after_prophy_R[j-1])}
+  
+  still_infected_plants_R <- infected_plant_number_R - not_infected_plants_after_prophy_R
+  
+  for (k in 2:length(symptomatic_plants_R)) {
+    symptomatic_plants_R[k] <- symptomatic_plants_R[k-1] + fungus_possibility_R[k]*
+      (still_infected_plants_R[k] - symptomatic_plants_R[k-1])}
+  
+  for (l in 2:length(detected_plants_after_monitoring_R)) {
+    detected_plants_after_monitoring_R[l] <- detected_plants_after_monitoring_R[l-1] + detection_factor_R[l]*
+      (symptomatic_plants_R[l] - detected_plants_after_monitoring_R[l-1])}
+  
+  symptomatic_plants_after_monitoring_R <- symptomatic_plants_R - detected_plants_after_monitoring_R
+  
+  for (m in 2:length(getting_again_sick_plants_R)) {
+    getting_again_sick_plants_R[m] <- getting_again_sick_plants_R[m-1] + disease_expansion_factor_R[m]*
+      (symptomatic_plants_after_monitoring_R[m] - getting_again_sick_plants_R[m-1])}
+  
+  all_symptomatic_plants_R <- symptomatic_plants_after_monitoring_R + getting_again_sick_plants_R
+  
+  for (n in 2:length(healthy_plants_after_fungus_fight_R)) {
+    healthy_plants_after_fungus_fight_R[n] <- healthy_plants_after_fungus_fight_R[n-1] + fungus_fight_effect_R[n]*
+      (all_symptomatic_plants_R[n] - healthy_plants_after_fungus_fight_R[n-1])}
+  
+  final_fungus_infected_plants_R <- all_symptomatic_plants_R[12] - healthy_plants_after_fungus_fight_R[12]
+  
+  direct_plant_losses_R <- detected_plants_after_monitoring_R[12]
+  
+  actual_saleable_Callunas_R <- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)
+  
+  ####Simulate infection and plant losses for REDUCED prophylactic application####
+  #for (i in 2:length(infected_plant_number_R)){
+  #  for (j in 2:length(not_infected_plants_after_prophy_R)) {
+  #    for (k in 2:length(symptomatic_plants_R)) {
+  #      for (l in 2:length(detected_plants_after_monitoring_R)) {
+  #        for (m in 2:length(getting_again_sick_plants_R)) {
+  #          for (n in 2:length(healthy_plants_after_fungus_fight_R)) {
+  
+  #            infected_plant_number_R[i] <- infected_plant_number_R[i-1] + risk_per_month[i]*
+  #              (original_plant_number - infected_plant_number_R[i-1])
+  
+  #            not_infected_plants_after_prophy_R[j] <- not_infected_plants_after_prophy_R[j-1] + effect_application_R[j]*
+  #              (infected_plant_number_R[j] - not_infected_plants_after_prophy_R[j-1])
+  
+  #            still_infected_plants_R <- infected_plant_number_R - not_infected_plants_after_prophy_R
+  
+  #            symptomatic_plants_R[k] <- symptomatic_plants_R[k-1] + fungus_possibility_R[k]*
+  #              (still_infected_plants_R[k] - symptomatic_plants_R[k-1]) 
+  
+  #            detected_plants_after_monitoring_R[l] <- detected_plants_after_monitoring_R[l-1] + detection_factor_R[l]*
+  #              (symptomatic_plants_R[l] - detected_plants_after_monitoring_R[l-1])
+  
+  #            symptomatic_plants_after_monitoring_R <- symptomatic_plants_R - detected_plants_after_monitoring_R
+  
+  #            getting_again_sick_plants_R[m] <- getting_again_sick_plants_R[m-1] + disease_expansion_factor_R[m]*
+  #              (symptomatic_plants_after_monitoring_R[m] - getting_again_sick_plants_R[m-1])
+  
+  #            all_symptomatic_plants_R <- symptomatic_plants_after_monitoring_R + getting_again_sick_plants_R
+  
+  #            healthy_plants_after_fungus_fight_R[n] <- healthy_plants_after_fungus_fight_R[n-1] + fungus_fight_effect_R[n]*
+  #              (all_symptomatic_plants_R[n] - healthy_plants_after_fungus_fight_R[n-1])
+  
+  #            final_fungus_infected_plants_R <- all_symptomatic_plants_R[12] - healthy_plants_after_fungus_fight_R[12]
+  
+  #            direct_plant_losses_R <- detected_plants_after_monitoring_R[12]
+  
+  #            actual_saleable_Callunas_R <- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)}}}}}}
   
   
   ####Calculating benefits and outputs####
@@ -206,7 +276,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   #cashflow and results 
   cashflow <- benefits - costs
-  NPV <- DecisionSupport::discount(x= cashflow, discount_rate = discount_rate, calculate_NPV = TRUE)
+  NPV <- decisionSupport::discount(x= cashflow, discount_rate = discount_rate, calculate_NPV = TRUE)
   
   
   return(list(NetPresentValue = NPV))
