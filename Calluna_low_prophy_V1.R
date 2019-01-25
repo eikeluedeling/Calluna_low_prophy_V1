@@ -9,20 +9,20 @@ setwd("C:/Users/ZEF/Documents/GitHub/Calluna_prophy_new_model")
 
 Calluna_low_prophy_V1 <- function(x, varnames){
   
-  #Calculate the plant amount of whole production area
+  #### Calculate the plant amount of whole production area ####
   original_plant_number <- production_area * plants_per_ha
   
-  #Define risky months (May to August)                
+  # Define risky months (May to August)                
   weather_arguments_for_infection <- c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)
   
-  #Simulate the infection risk for each month under uncertainty
-  #risk_per_month <- runif(4, 0, (infection_risk>=0)) * weather_arguments_for_infection 
+  # Simulate the infection risk for each month under uncertainty
   risk_per_month <- vv(infection_risk, var_CV, 12)* weather_arguments_for_infection
   risk_per_month <- sapply(risk_per_month, function(x) max(c(min(c(1,x)),0)))
   
-  #Settings for factors in % so that they will not be higher or lower than 1
-  #random values are selected out of pre-defined intervalls
-  #Calculate risks for NORMAL prophylactic application
+  #### Settings for factors in % so that they will not be higher or lower than 1 ####
+  # random values are selected out of pre-defined intervalls
+  
+  #### Calculate risks and factors for NORMAL prophylactic application ####
   fungus_possibility <- vv(fungus_possibility_N, var_CV, 12)* weather_arguments_for_infection
   fungus_possibility_N <- sapply(fungus_possibility, function(x) max(c(min(c(1,x)),0)))
   
@@ -35,7 +35,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   fungus_fight_effect <- vv(fungus_fight_effect_N, var_CV, 12)* weather_arguments_for_infection
   fungus_fight_effect_N <- sapply(fungus_fight_effect, function(x) max(c(min(c(1,x)),0)))
   
-  #For REDUCED prophylactic application
+  #### Calculate risks and factors ror REDUCED prophylactic application ####
   fungus_possibility <- vv(fungus_possibility_R, var_CV, 12)* weather_arguments_for_infection
   fungus_possibility_R <- sapply(fungus_possibility, function(x) max(c(min(c(1,x)),0)))
   
@@ -48,28 +48,31 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   fungus_fight_effect <- vv(fungus_fight_effect_R, var_CV, 12)* weather_arguments_for_infection
   fungus_fight_effect_R <- sapply(fungus_fight_effect, function(x) max(c(min(c(1,x)),0)))
   
+  #### NORMAL and REDUCED prophylactic pesticide application costs in Calluna production system per year ####
+  costs_yearly_prophy_application_N <- round((number_yearly_prophy_application_N),digits=0) * 
+    cost_one_prophy_application * production_area
   
-  #Use function to split prophylactic application sum per year 
-  #in accidentally selected application quantity per month
+  costs_yearly_prophy_application_R <- round((number_yearly_prophy_application_R),digits=0) * 
+    cost_one_prophy_application * production_area
+  
+  # Use function to split prophylactic application sum per year in accidentally selected application quantity per month
   
   need.random.integers <- function(a,b,n,k){
-    #finds n random integers in range a:b which sum to k
+    # Finds n random integers in range a:b which sum to k
     while(TRUE){
       x <- sample(1:(k - n*a),n-1, replace = TRUE)
       x <- sort(x)
       x <- c(x,k-n*a) - c(0,x)
-      if(max(x) <= b-a) return(a+x)
-    }
-  }
+      if(max(x) <= b-a) return(a+x)}}
   
-  #For NORMAL prophylactic application (number_yearly_prophy_application_N)
+  # For NORMAL prophylactic application
   effect_application_N <- need.random.integers(0, round((number_yearly_prophy_application_N), digits = 0),
                                                4, round((number_yearly_prophy_application_N), digits = 0)) 
   effect_application_N <- effect_application_N * weather_arguments_for_infection
   
   
-  #Define effect of normal prophylactic pesticide application (potential to reduce fungus onset)
-  #Estimated effect of fungus reduce potential are interlinked with each number of application per month   
+  # Define effect of NORMAL prophylactic pesticide application (potential to reduce fungus onset)
+  # Estimated effect of fungus reduce potential are interlinked with each number of application per month   
   effect_application_N <- effect_application_N %>%
     replace(., effect_application_N==1, effect_one_prophy_application) %>%
     replace(., effect_application_N==2, effect_two_prophy_application) %>%
@@ -81,12 +84,12 @@ Calluna_low_prophy_V1 <- function(x, varnames){
     replace(., effect_application_N>=8, effect_eight_prophy_application)
   
   
-  #For REDUCED prophylactic application (number_yearly_prophy_application_R)
+  # For REDUCED prophylactic application
   effect_application_R <- need.random.integers(0, round((number_yearly_prophy_application_R), digits = 0),
                                                4, round((number_yearly_prophy_application_R), digits = 0))
   effect_application_R <- effect_application_R * weather_arguments_for_infection
   
-  #Define effect of reduced prophylactic pesticide application (potential to reduce fungus onset)
+  # Define effect of REDUCED prophylactic pesticide application (potential to reduce fungus onset)
   effect_application_R <- effect_application_R %>%
     replace(., effect_application_R==1, effect_one_prophy_application) %>%
     replace(., effect_application_R==2, effect_two_prophy_application) %>%
@@ -96,13 +99,11 @@ Calluna_low_prophy_V1 <- function(x, varnames){
     replace(., effect_application_R==6, effect_six_prophy_application) %>%
     replace(., effect_application_R==7, effect_seven_prophy_application) %>%
     replace(., effect_application_R>=8, effect_eight_prophy_application)
+
+  # Simulate all probabilities of infection, effect of prophylactic applications, ####
+  # number of symptomatic plants, monitoring and detection of sick plants and reinfection 
+  # to get number of detected, not saleable and healthy plants for NORMAL prophy
   
-  
-  #Simulate different infection risks per month per quarter of the production system
-  #to receive the overall number of all infected Callunas in the whole production area
-  #Splitting the system into quarters allows realistic conditions (Variation of infection respectively to area)
-  
-  #Simulate the infection of plants
   infected_plant_number_N <- original_plant_number*risk_per_month
   not_infected_plants_after_prophy_N <- weather_arguments_for_infection
   symptomatic_plants_N <- weather_arguments_for_infection
@@ -146,7 +147,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   actual_saleable_Callunas_N <- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)
   
-  ####Simulate infection and plant losses for NORMAL prophylactic application####
+  ####Simulate infection and plant losses for NORMAL prophylactic application
   #for (i in 2:length(infected_plant_number_N)){
   #  for (j in 2:length(not_infected_plants_after_prophy_N)) {
   #      for (k in 2:length(symptomatic_plants_N)) {
@@ -186,7 +187,10 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   
   
-  #Simulate infection and plant losses for REDUCED prophylactic application####
+  # Simulate all probabilities of infection, effect of prophylactic applications, ####
+  # number of symptomatic plants, monitoring and detection of sick plants and reinfection 
+  # to get number of detected, not saleable and healthy plants for REDUCED prophy
+  
   infected_plant_number_R <- original_plant_number * risk_per_month
   not_infected_plants_after_prophy_R <- weather_arguments_for_infection
   symptomatic_plants_R <- weather_arguments_for_infection
@@ -230,7 +234,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   actual_saleable_Callunas_R <- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)
   
-  ####Simulate infection and plant losses for REDUCED prophylactic application####
+  ####Simulate infection and plant losses for REDUCED prophylactic application
   #for (i in 2:length(infected_plant_number_R)){
   #  for (j in 2:length(not_infected_plants_after_prophy_R)) {
   #    for (k in 2:length(symptomatic_plants_R)) {
@@ -269,12 +273,68 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   #            actual_saleable_Callunas_R <- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)}}}}}}
   
   
-  ####Calculating benefits and outputs####
+  #### Calculation of Calluna monetary value for NORMAL prophy cultivation ####
+  # Differ between saleable, sorted out and not saleable plants after cultivation time
+  value_saleable_plants_N <- actual_saleable_Callunas_N * value_of_saleable_Calluna
+  value_of_sorted_out_plants_N <- direct_plant_losses_N * value_sorted_out_Calluna
+  value_of_not_saleable_plants_N <- final_fungus_infected_plants_N * value_not_saleable_Calluna
   
-  benefits <- actual_saleable_Callunas_N
-  costs <- actual_saleable_Callunas_R
+  #### Calculation of Calluna monetary value for REDUCED prophy cultivation ####
+  # Differ between saleable, sorted out and not saleable plants after cultivation time
+  value_saleable_plants_R <- actual_saleable_Callunas_R * value_of_saleable_Calluna
+  value_of_sorted_out_plants_R <- direct_plant_losses_R * value_sorted_out_Calluna
+  value_of_not_saleable_plants_R <- final_fungus_infected_plants_R * value_not_saleable_Calluna
   
-  #cashflow and results 
+  #### List up yearly costs for whole production area for NORMAL prophy ####
+  costs_per_year_N <- (value_of_one_new_plant * original_plant_number) +
+    value_of_sorted_out_plants_N +
+    value_of_not_saleable_plants_N +
+    costs_water * production_area +
+    costs_yearly_prophy_application_N +
+    costs_normal_fertilizer * production_area +
+   (costs_monitoring_per_ha_month * sum(weather_arguments_for_infection) * production_area) +
+    costs_staff +
+    yearly_costs_of_direct_fungus_fight_N * production_area
+  
+  
+  #### List up the benefits for each year for whole production area for normal application ####
+  benefits_per_year_N <- value_saleable_plants_N
+  
+  
+  #### List up costs for each year for whole production area for reduced application ####
+  # Optimizing in monitoring leads to higher costs per hectar because of more time and staff use
+  # Threshold is defined from 1 - 3 ha production area
+  costs_staff <- ifelse(production_area > threshold_big_area_more_staff, costs_staff + 
+                          costs_more_staff, costs_staff)
+  
+  #### List up yearly costs for whole production area for REDUCED prophy ####
+  costs_per_year_R <- (value_of_one_new_plant * original_plant_number) +
+    value_of_sorted_out_plants_R +
+    value_of_not_saleable_plants_R +
+    costs_water * production_area +
+    costs_yearly_prophy_application_R +
+   (costs_normal_fertilizer + fertilizer_adjustment) * production_area +
+   (costs_monitoring_per_ha_month * sum(weather_arguments_for_infection) * production_area) +
+    additional_costs_more_monitoring_per_ha * production_area +
+    costs_staff +
+    yearly_costs_of_direct_fungus_fight_R * production_area
+  
+  
+  
+  # List up the benefits for each year for whole production area for reduced application
+  benefits_per_year_R <- value_saleable_plants_R
+  
+  #### Benefits and outputs ####
+  
+  # Define all benefits and costs for NORMAL PROPHY APPLICATION
+  # Define all benefits and costs for REDUCED PROPHY APPLICATION 
+  
+  #### Just change N to R or vice versa #### 
+  
+  benefits <- benefits_per_year_R
+  costs <- costs_per_year_R
+  
+  #### cashflow and results #### 
   cashflow <- benefits - costs
   NPV <- decisionSupport::discount(x= cashflow, discount_rate = discount_rate, calculate_NPV = TRUE)
   
@@ -331,4 +391,3 @@ for (variable_name in outvars)
                   borderlines = FALSE,lwd = 2,
                   fileformat = "png",filename = paste(figures_folder,"/Combined_",variable_name,sep = ""),
                   legend_table = legend_table)
-###########################################################################################################################

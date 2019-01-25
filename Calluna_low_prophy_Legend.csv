@@ -24,3 +24,18 @@ effect_five_prophy_application,Krankheits-Reduzierungspotential von fünf prophyl
 effect_six_prophy_application,Krankheits-Reduzierungspotential von sechs prophylaktischen Applikationen pro Monat (in %)
 effect_seven_prophy_application,Krankheits-Reduzierungspotential von sieben prophylaktischen Applikationen pro Monat (in %)
 effect_eight_prophy_application,Krankheits-Reduzierungspotential von acht prophylaktischen Applikationen pro Monat (in %)
+value_of_saleable_Calluna,Wert einer verkäuflichen Callune (in €)
+value_not_saleable_Calluna,"Der Wert einer Callune, die fertig produziert wurde, aber aufgrund schlechter Qualität nicht mehr verkauft werden kann (in €)"
+value_sorted_out_Calluna,"Wert einer aussortierten Callune, die während der Kultivierung erkrankt ist weggeschmissen werden muss (in €)"
+value_of_one_new_plant,"Wert des neuen Pflanzenmaterials, das jedes Jahr neu hinzu gekauft wird "
+fertilizer_adjustment,Kosten der Anpassung im Düngermanagement aufgrund reduziertem prophylaktischen Spritzen pro Jahr
+costs_normal_fertilizer,Kosten der Düngung unter gleichbleibenden Betriebsbedingungen pro Jahr pro Hektar (in €)
+costs_water,Wasserkosten pro Jahr pro Hektar
+costs_staff,Generelle Kosten für eine/n Mitarbeiter/in pro Jahr (in €)
+costs_more_staff,Zusätzliche Kosten für zusätzliches Fachpersonal pro Jahr je Arbeitskraft (in €)
+threshold_big_area_more_staff,Ab welcher Fläche würde man neues Personal benötigen? (in Hektar)
+costs_monitoring_per_ha_month,Kosten für Monitoring pro Hektar pro Monat (in €)
+additional_costs_more_monitoring_per_ha,Zusätzliche Kosten für zusätzliches Monitoring (in € pro Hektar)
+yearly_costs_of_direct_fungus_fight_N,Jährliche Kosten der direkten Pilzbekämpfung nach einer genutzten normalen prophylaktischen Behandlungsstrategie por ha (in €)
+yearly_costs_of_direct_fungus_fight_R,Jährliche Kosten der direkten Pilzbekämpfung nach einer genutzten reduzierten prophylaktischen Behandlungsstrategie pro ha(in €)
+cost_one_prophy_application,Kosten für eine prophylaktische Pflanzenschutz Applikation pro Hektar (in €)

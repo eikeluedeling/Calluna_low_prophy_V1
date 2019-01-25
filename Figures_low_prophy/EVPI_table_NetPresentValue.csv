@@ -1,26 +1,41 @@
 "","thold","EVPI_do","EVPI_dont"
+"value_of_saleable_Calluna",0.6609203,27677.1737778181,129994.681727237
+"number_yearly_prophy_application_R",0.392146,0.708867862983249,86727.6220202766
 "discount_rate",no relationship,0,0
 "years",no variation,0,0
 "production_area",no variation,0,0
 "infection_risk",NA,0,0
 "plants_per_ha",NA,0,0
 "total_failure_risk",no relationship,0,0
-"fungus_possibility_N",NA,0,0
-"fungus_possibility_R",0.00156178323240153,0,137017.353408927
+"fungus_possibility_N",no relationship,0,0
+"fungus_possibility_R",NA,0,0
 "disease_expansion_factor_N",no relationship,0,0
 "disease_expansion_factor_R",NA,0,0
-"detection_factor_N",NA,0,0
+"detection_factor_N",no relationship,0,0
 "detection_factor_R",NA,0,0
-"fungus_fight_effect_N",NA,0,0
+"fungus_fight_effect_N",no relationship,0,0
 "fungus_fight_effect_R",NA,0,0
 "var_CV",no relationship,0,0
-"number_yearly_prophy_application_N",NA,0,0
-"number_yearly_prophy_application_R",NA,0,0
+"number_yearly_prophy_application_N",no relationship,0,0
 "effect_one_prophy_application",NA,0,0
-"effect_two_prophy_application",NA,0,0
+"effect_two_prophy_application",no relationship,0,0
 "effect_three_prophy_application",no relationship,0,0
 "effect_four_prophy_application",no relationship,0,0
 "effect_five_prophy_application",no relationship,0,0
 "effect_six_prophy_application",no relationship,0,0
 "effect_seven_prophy_application",no relationship,0,0
 "effect_eight_prophy_application",no relationship,0,0
+"value_not_saleable_Calluna",NA,0,0
+"value_sorted_out_Calluna",NA,0,0
+"value_of_one_new_plant",NA,0,0
+"fertilizer_adjustment",no relationship,0,0
+"costs_normal_fertilizer",NA,0,0
+"costs_water",NA,0,0
+"costs_staff",NA,0,0
+"costs_more_staff",NA,0,0
+"threshold_big_area_more_staff",no relationship,0,0
+"costs_monitoring_per_ha_month",NA,0,0
+"additional_costs_more_monitoring_per_ha",no relationship,0,0
+"yearly_costs_of_direct_fungus_fight_N",no relationship,0,0
+"yearly_costs_of_direct_fungus_fight_R",NA,0,0
+"cost_one_prophy_application",no relationship,0,0
