@@ -4,9 +4,10 @@ library(DAutilities)
 library(Surrogate)
 library(decisionSupport)
 library(tidyverse)
+library(dplyr)
 
 setwd("C:/Users/ZEF/Desktop/Calluna_Folder") 
-#avoid using 'new' in your titles. Imagine that we will look back at this long after your PhD for ideas, when we both have grey beards. It will no longer be 'new'
+
 Calluna_low_prophy_V1 <- function(x, varnames){
   
   #Calculate the plant amount of whole production area
@@ -17,7 +18,6 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   #Simulate the infection risk for each month under uncertainty
   #risk_per_month <- runif(4, 0, (infection_risk>=0)) * weather_arguments_for_infection 
-  
   risk_per_month <- vv(infection_risk, var_CV, 12)* weather_arguments_for_infection
   risk_per_month <- sapply(risk_per_month, function(x) max(c(min(c(1,x)),0)))
   
@@ -110,6 +110,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   detected_plants_after_monitoring_N <- weather_arguments_for_infection
   healthy_plants_after_fungus_fight_N <- weather_arguments_for_infection
   getting_again_sick_plants_N <- weather_arguments_for_infection
+    
   
   ####Simulate infection and plant losses for NORMAL prophylactic application####
   for (i in 2:length(infected_plant_number_N)){
@@ -214,10 +215,10 @@ Calluna_low_prophy_V1 <- function(x, varnames){
 
 
 
-input_table <- "Calluna_new_prophy.csv"
-legend_file <- "Calluna_new_prophy_Legend.csv"
-results_folder <- "Results_new_prophy"
-figures_folder <- "Figures_new_prophy"
+input_table <- "Calluna_low_prophy.csv"
+legend_file <- "Calluna_low_prophy_Legend.csv"
+results_folder <- "Results_low_prophy"
+figures_folder <- "Figures_low_prophy"
 
 make_variables <- function(est,n=1)
 { x <- random(rho=est, n=n)
