@@ -5,11 +5,11 @@ library(dplyr)
 library(Surrogate)
 library(MASS)
 
-setwd("C:/Users/ZEF/Documents/GitHub/Calluna_prophy_new_model") 
+setwd("C:/Users/ZEF/Documents/GitHub/Calluna_prophy_new_model") #Check getwd() and see that this is always the case
 
 Calluna_low_prophy_V1 <- function(x, varnames){
   
-  #### Calculate the plant amount of whole production area ####
+  #### Calculate the number of plants in the whole production area ####
   original_plant_number <- production_area * plants_per_ha
   
   # Define risky months (May to August)                
@@ -72,7 +72,8 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   
   # Define effect of NORMAL prophylactic pesticide application (potential to reduce fungus onset)
-  # Estimated effect of fungus reduce potential are interlinked with each number of application per month   
+  # Estimated effect of fungus reduce potential are interlinked with each number of application per month  
+  library(magrittr)
   effect_application_N <- effect_application_N %>%
     replace(., effect_application_N==1, effect_one_prophy_application) %>%
     replace(., effect_application_N==2, effect_two_prophy_application) %>%

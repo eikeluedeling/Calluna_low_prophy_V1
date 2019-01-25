@@ -12,30 +12,40 @@ library(DAutilities)
 library(Surrogate)
 library(decisionSupport)
 library(tidyverse)
+library(knitr)
+library(kableExtra)
+options(knitr.table.format = "html")
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
+The input table is ...
 ```{r}
-summary(cars)
-```
+input_table <- read.csv("Calluna_low_prophy.csv")
+input_table <-select(input_table, -X, -General.variables, - Description, - median)
+kable(input_table)%>%
+  kable_styling(bootstrap_options = c("striped", "hover")) 
+```  
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
+Load the input table and make variables. The rest of the calculations in this doument will be based on random draws from the distributions in the input table `Calluna_low_prophy.csv`.
 ```{r}
+input_table <- "Calluna_low_prophy.csv"
 
+make_variables <- function(est,n=1)
+{ x <- random(rho=est, n=n)
+for(i in colnames(x)) assign(i, as.numeric(x[1,i]),envir = .GlobalEnv)}
+
+make_variables(estimate_read_csv(input_table))
 
 ```
 
+## Calluna function in `decisionSupport`
+
+Calculate the number of plants in the whole production area
+```{r}
+  original_plant_number <- production_area * plants_per_ha
+
+  original_plant_number
+```
+Define risky months (May to August) 
+```{r}
+  weather_arguments_for_infection <- c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)
+```
