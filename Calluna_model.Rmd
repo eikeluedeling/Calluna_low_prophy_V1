@@ -1,6 +1,6 @@
 ---
 title: "A model of Calluna production decision"
-author: "Marius RÃ¼tt, Cory Whitney"
+author: "Marius Rütt, Cory Whitney"
 date: "1/22/2019"
 output: html_document
 ---
