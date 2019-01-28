@@ -18,7 +18,7 @@ options(knitr.table.format = "html")
 ```
 
 The input table is ...
-```{r}
+```{r, echo=FALSE}
 input_table <- read.csv("Calluna_low_prophy.csv")
 input_table <-select(input_table, -X, -General.variables, - Description, - median)
 kable(input_table)%>%
@@ -42,7 +42,9 @@ make_variables(estimate_read_csv(input_table))
 Calculate the number of plants in the whole production area
 ```{r}
   original_plant_number <- production_area * plants_per_ha
+```
 
+```{r, echo=FALSE}
   original_plant_number
 ```
 Define risky months (May to August) 

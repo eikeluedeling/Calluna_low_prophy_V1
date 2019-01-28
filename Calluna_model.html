@@ -129,11 +129,7 @@ $(document).ready(function () {
 </div>
 
 
-<p>The input table is …</p>
-<pre class="r"><code>input_table &lt;- read.csv(&quot;Calluna_low_prophy.csv&quot;)
-input_table &lt;-select(input_table, -X, -General.variables, - Description, - median)
-kable(input_table)%&gt;%
-  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;)) </code></pre>
+The input table is …
 <table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -725,10 +721,8 @@ make_variables(estimate_read_csv(input_table))</code></pre>
 <div id="calluna-function-in-decisionsupport" class="section level2">
 <h2>Calluna function in <code>decisionSupport</code></h2>
 <p>Calculate the number of plants in the whole production area</p>
-<pre class="r"><code>  original_plant_number &lt;- production_area * plants_per_ha
-
-  original_plant_number</code></pre>
-<pre><code>## [1] 732896.8</code></pre>
+<pre class="r"><code>  original_plant_number &lt;- production_area * plants_per_ha</code></pre>
+<pre><code>## [1] 747045.7</code></pre>
 <p>Define risky months (May to August)</p>
 <pre class="r"><code>  W &lt;- weather_arguments_for_infection &lt;- c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)</code></pre>
 <p>Simulate the infection risk for each month under uncertainty</p>
@@ -937,7 +931,7 @@ make_variables(estimate_read_csv(input_table))</code></pre>
   
   return(list(NetPresentValue = NPV))</code></pre>
 <pre><code>## $NetPresentValue
-## [1] -159384.3</code></pre>
+## [1] 449153.6</code></pre>
 </div>
 
 
