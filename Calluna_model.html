@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Marius Rütt, Cory Whitney" />
+<meta name="author" content="Marius Ruett, Cory Whitney" />
 
 
 <title>A model of Calluna production decision</title>
@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A model of Calluna production decision</h1>
-<h4 class="author"><em>Marius Rütt, Cory Whitney</em></h4>
+<h4 class="author"><em>Marius Ruett, Cory Whitney</em></h4>
 <h4 class="date"><em>1/22/2019</em></h4>
 
 </div>
@@ -160,20 +160,6 @@ posnorm
 </td>
 <td style="text-align:left;">
 discount_rate
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-1.0e+01
-</td>
-<td style="text-align:right;">
-1.0e+01
-</td>
-<td style="text-align:left;">
-const
-</td>
-<td style="text-align:left;">
-years
 </td>
 </tr>
 <tr>
@@ -216,20 +202,6 @@ posnorm
 </td>
 <td style="text-align:left;">
 plants_per_ha
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-1.0e-01
-</td>
-<td style="text-align:right;">
-3.0e-01
-</td>
-<td style="text-align:left;">
-tnorm_0_1
-</td>
-<td style="text-align:left;">
-total_failure_risk
 </td>
 </tr>
 <tr>
@@ -377,7 +349,7 @@ number_yearly_prophy_application_N
 2.0e+00
 </td>
 <td style="text-align:right;">
-6.0e+00
+1.0e+01
 </td>
 <td style="text-align:left;">
 posnorm
@@ -722,42 +694,56 @@ make_variables(estimate_read_csv(input_table))</code></pre>
 <h2>Calluna function in <code>decisionSupport</code></h2>
 <p>Calculate the number of plants in the whole production area</p>
 <pre class="r"><code>  original_plant_number &lt;- production_area * plants_per_ha</code></pre>
-<pre><code>## [1] 747045.7</code></pre>
+<pre><code>## [1] 776456.4</code></pre>
 <p>Define risky months (May to August)</p>
 <pre class="r"><code>  W &lt;- weather_arguments_for_infection &lt;- c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)</code></pre>
+<pre><code>##  [1] 0 0 0 0 1 1 1 1 0 0 0 0</code></pre>
 <p>Simulate the infection risk for each month under uncertainty</p>
 <pre class="r"><code>  risk_per_month &lt;- vv(infection_risk, var_CV, 12)* W %&gt;%
   sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.6367427 0.5801389 0.6776476
+##  [8] 0.6549266 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
 <p>Settings for factors in % so that they will not be higher or lower than 1 random values are selected out of pre-defined intervalls Calculate risks and factors for NORMAL prophylactic application</p>
 <pre class="r"><code>  fungus_possibility_N &lt;- vv(fungus_possibility_N, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-
-  detection_factor_N &lt;- vv(detection_factor_N, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-  
-  disease_expansion_factor_N &lt;- vv(disease_expansion_factor_N, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-  
-  fungus_fight_effect_N &lt;- vv(fungus_fight_effect_N, var_CV, 12)* W %&gt;%
   sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
-<p>Calculate risks and factors ror REDUCED prophylactic application</p>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.4057907 0.5010217 0.4056373
+##  [8] 0.5161020 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
+<pre class="r"><code>  detection_factor_N &lt;- vv(detection_factor_N, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.3183345 0.3378762 0.2405164
+##  [8] 0.3237816 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
+<pre class="r"><code>  disease_expansion_factor_N &lt;- vv(disease_expansion_factor_N, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.02942522 0.03197524
+##  [7] 0.02437065 0.02604078 0.00000000 0.00000000 0.00000000 0.00000000</code></pre>
+<pre class="r"><code>  fungus_fight_effect_N &lt;- vv(fungus_fight_effect_N, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.3242241 0.3224703 0.3251097
+##  [8] 0.3398332 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
+<p>Calculate risks and factors for REDUCED prophylactic application</p>
 <pre class="r"><code>  fungus_possibility_R &lt;- vv(fungus_possibility_R, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-  
-  detection_factor_R &lt;- vv(detection_factor_R, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-  
-  disease_expansion_factor_R &lt;- vv(disease_expansion_factor_R, var_CV, 12)* W %&gt;%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
-  
-  fungus_fight_effect_R &lt;- vv(fungus_fight_effect_R, var_CV, 12)* W %&gt;%
   sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.4680087 0.4861983 0.3900173
+##  [8] 0.5388566 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
+<pre class="r"><code>  detection_factor_R &lt;- vv(detection_factor_R, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.8186924 0.9395732 0.8723482
+##  [8] 0.9456261 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
+<pre class="r"><code>  disease_expansion_factor_R &lt;- vv(disease_expansion_factor_R, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.06427077 0.07594189
+##  [7] 0.07230669 0.07565235 0.00000000 0.00000000 0.00000000 0.00000000</code></pre>
+<pre class="r"><code>  fungus_fight_effect_R &lt;- vv(fungus_fight_effect_R, var_CV, 12)* W %&gt;%
+  sapply(., function(x) max(c(min(c(1,x)),0)))</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.7375443 0.6260724 0.6175012
+##  [8] 0.5885438 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
 <p>NORMAL and REDUCED prophylactic pesticide application costs in Calluna production system per year</p>
 <pre class="r"><code>  costs_yearly_prophy_application_N &lt;- round((number_yearly_prophy_application_N),digits=0) * 
-  cost_one_prophy_application * production_area
-  
-  costs_yearly_prophy_application_R &lt;- round((number_yearly_prophy_application_R),digits=0) * 
   cost_one_prophy_application * production_area</code></pre>
+<pre><code>## [1] 13645.75</code></pre>
+<pre class="r"><code>  costs_yearly_prophy_application_R &lt;- round((number_yearly_prophy_application_R),digits=0) * 
+  cost_one_prophy_application * production_area</code></pre>
+<pre><code>## [1] 6822.873</code></pre>
 <p>Use function to split prophylactic application sum per year in accidentally selected application quantity per month Function finds n random integers in range a:b which sum to k</p>
 <pre class="r"><code>need.random.integers &lt;- function(a,b,n,k){
   while(TRUE){
@@ -767,8 +753,8 @@ make_variables(estimate_read_csv(input_table))</code></pre>
       if(max(x) &lt;= b-a) return(a+x)}}</code></pre>
 <p>For NORMAL prophylactic application</p>
 <pre class="r"><code>  effect_application_N &lt;- need.random.integers(0, round((number_yearly_prophy_application_N), digits = 0),
-                                               4, round((number_yearly_prophy_application_N), digits = 0)) 
-  effect_application_N &lt;- effect_application_N * W</code></pre>
+                                               4, round((number_yearly_prophy_application_N), digits = 0))* W</code></pre>
+<pre><code>##  [1]  0  0  0  0 10  4  2  0  0  0  0  0</code></pre>
 <p>Define effect of NORMAL prophylactic pesticide application (potential to reduce fungus onset) Estimated effect of fungus reduce potential are interlinked with each number of application per month</p>
 <pre class="r"><code>  effect_application_N &lt;- effect_application_N %&gt;%
     replace(., effect_application_N==1, effect_one_prophy_application) %&gt;%
@@ -779,10 +765,12 @@ make_variables(estimate_read_csv(input_table))</code></pre>
     replace(., effect_application_N==6, effect_six_prophy_application) %&gt;%
     replace(., effect_application_N==7, effect_seven_prophy_application) %&gt;%
     replace(., effect_application_N&gt;=8, effect_eight_prophy_application)</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.9252734 0.5421378 0.2963491
+##  [8] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
 <p>For REDUCED prophylactic application</p>
 <pre class="r"><code>  effect_application_R &lt;- need.random.integers(0, round((number_yearly_prophy_application_R), digits = 0),
-                                               4, round((number_yearly_prophy_application_R), digits = 0))
-  effect_application_R &lt;- effect_application_R * W</code></pre>
+                                               4, round((number_yearly_prophy_application_R), digits = 0))* W</code></pre>
+<pre><code>##  [1] 0 0 0 0 4 2 2 0 0 0 0 0</code></pre>
 <p>Define effect of REDUCED prophylactic pesticide application (potential to reduce fungus onset)</p>
 <pre class="r"><code>  effect_application_R &lt;- effect_application_R %&gt;%
     replace(., effect_application_R==1, effect_one_prophy_application) %&gt;%
@@ -793,6 +781,8 @@ make_variables(estimate_read_csv(input_table))</code></pre>
     replace(., effect_application_R==6, effect_six_prophy_application) %&gt;%
     replace(., effect_application_R==7, effect_seven_prophy_application) %&gt;%
     replace(., effect_application_R&gt;=8, effect_eight_prophy_application)</code></pre>
+<pre><code>##  [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.5421378 0.2963491 0.2963491
+##  [8] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</code></pre>
 <p>Now calculation for the normal prophylactic application scenario</p>
 <p>All used vectors need to have the same length</p>
 <pre class="r"><code>  not_infected_plants_after_prophy_N &lt;- W
@@ -805,39 +795,50 @@ make_variables(estimate_read_csv(input_table))</code></pre>
   
   for (i in 2:length(infected_plant_number_N)){ 
     infected_plant_number_N[i] &lt;- infected_plant_number_N[i-1] + risk_per_month[i]*
-      (original_plant_number - infected_plant_number_N[i-1])}
-  
-  for (j in 2:length(not_infected_plants_after_prophy_N)) {
+      (original_plant_number - infected_plant_number_N[i-1])}</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 494402.9 658033.1 738282.4
+##  [8] 763283.6 763283.6 763283.6 763283.6 763283.6</code></pre>
+<pre class="r"><code>  for (j in 2:length(not_infected_plants_after_prophy_N)) {
     not_infected_plants_after_prophy_N[j] &lt;- not_infected_plants_after_prophy_N[j-1] + effect_application_N[j]*
-      (infected_plant_number_N[j] - not_infected_plants_after_prophy_N[j-1])}
-  
-  still_infected_plants_N &lt;- infected_plant_number_N - not_infected_plants_after_prophy_N
-  
-  for (k in 2:length(symptomatic_plants_N)) {
+      (infected_plant_number_N[j] - not_infected_plants_after_prophy_N[j-1])}</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 457457.9 566197.3 617194.6
+##  [8] 617194.6 617194.6 617194.6 617194.6 617194.6</code></pre>
+<pre class="r"><code>  still_infected_plants_N &lt;- infected_plant_number_N - not_infected_plants_after_prophy_N</code></pre>
+<pre><code>##  [1]      0.00      0.00      0.00      0.00  36945.03  91835.80 121087.81
+##  [8] 146088.99 146088.99 146088.99 146088.99 146088.99</code></pre>
+<pre class="r"><code>  for (k in 2:length(symptomatic_plants_N)) {
     symptomatic_plants_N[k] &lt;- symptomatic_plants_N[k-1] + fungus_possibility_N[k]*
-      (still_infected_plants_N[k] - symptomatic_plants_N[k-1])}
-  
-  for (l in 2:length(detected_plants_after_monitoring_N)) {
+      (still_infected_plants_N[k] - symptomatic_plants_N[k-1])}</code></pre>
+<pre><code>##  [1]      0.00      0.00      0.00      0.00  14991.95  53492.39  80911.61
+##  [8] 114549.79 114549.79 114549.79 114549.79 114549.79</code></pre>
+<pre class="r"><code>  for (l in 2:length(detected_plants_after_monitoring_N)) {
     detected_plants_after_monitoring_N[l] &lt;- detected_plants_after_monitoring_N[l-1] + detection_factor_N[l]*
-      (symptomatic_plants_N[l] - detected_plants_after_monitoring_N[l-1])}
-  
-  symptomatic_plants_after_monitoring_N &lt;- symptomatic_plants_N - detected_plants_after_monitoring_N
-  
-  for (m in 2:length(getting_again_sick_plants_N)) {
+      (symptomatic_plants_N[l] - detected_plants_after_monitoring_N[l-1])}</code></pre>
+<pre><code>##  [1]     0.000     0.000     0.000     0.000  4772.454 21233.759 35587.261
+##  [8] 61153.875 61153.875 61153.875 61153.875 61153.875</code></pre>
+<pre class="r"><code>  symptomatic_plants_after_monitoring_N &lt;- symptomatic_plants_N - detected_plants_after_monitoring_N</code></pre>
+<pre><code>##  [1]     0.00     0.00     0.00     0.00 10219.50 32258.63 45324.35
+##  [8] 53395.91 53395.91 53395.91 53395.91 53395.91</code></pre>
+<pre class="r"><code>  for (m in 2:length(getting_again_sick_plants_N)) {
     getting_again_sick_plants_N[m] &lt;- getting_again_sick_plants_N[m-1] + disease_expansion_factor_N[m]*
-      (symptomatic_plants_after_monitoring_N[m] - getting_again_sick_plants_N[m-1])}
-  
-  all_symptomatic_plants_N &lt;- symptomatic_plants_after_monitoring_N + getting_again_sick_plants_N
-  
-  for (n in 2:length(healthy_plants_after_fungus_fight_N)) {
+      (symptomatic_plants_after_monitoring_N[m] - getting_again_sick_plants_N[m-1])}</code></pre>
+<pre><code>##  [1]    0.0000    0.0000    0.0000    0.0000  300.7109 1322.5729 2394.9249
+##  [8] 3723.0305 3723.0305 3723.0305 3723.0305 3723.0305</code></pre>
+<pre class="r"><code>  all_symptomatic_plants_N &lt;- symptomatic_plants_after_monitoring_N + getting_again_sick_plants_N</code></pre>
+<pre><code>##  [1]     0.00     0.00     0.00     0.00 10520.21 33581.20 47719.28
+##  [8] 57118.94 57118.94 57118.94 57118.94 57118.94</code></pre>
+<pre class="r"><code>  for (n in 2:length(healthy_plants_after_fungus_fight_N)) {
     healthy_plants_after_fungus_fight_N[n] &lt;- healthy_plants_after_fungus_fight_N[n-1] + fungus_fight_effect_N[n]*
       (all_symptomatic_plants_N[n] - healthy_plants_after_fungus_fight_N[n-1])}</code></pre>
+<pre><code>##  [1]     0.000     0.000     0.000     0.000  3410.905 13139.930 24382.010
+##  [8] 35507.107 35507.107 35507.107 35507.107 35507.107</code></pre>
 <p>Define the number of infected plants, direct plant losses and actual saleable plants for normal prophy</p>
-<pre class="r"><code>  final_fungus_infected_plants_N &lt;- all_symptomatic_plants_N[12] - healthy_plants_after_fungus_fight_N[12]
-  
-  direct_plant_losses_N &lt;- detected_plants_after_monitoring_N[12]
-  
-  actual_saleable_Callunas_N &lt;- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)</code></pre>
+<pre class="r"><code>  final_fungus_infected_plants_N &lt;- all_symptomatic_plants_N[12] - healthy_plants_after_fungus_fight_N[12]</code></pre>
+<pre><code>## [1] 21611.84</code></pre>
+<pre class="r"><code>  direct_plant_losses_N &lt;- detected_plants_after_monitoring_N[12]</code></pre>
+<pre><code>## [1] 61153.87</code></pre>
+<pre class="r"><code>  actual_saleable_Callunas_N &lt;- original_plant_number - (final_fungus_infected_plants_N + direct_plant_losses_N)</code></pre>
+<pre><code>## [1] 693690.7</code></pre>
 <p>Now calculation for the reduced prophylactic application scenario</p>
 <p>All used vectors need to have the same length</p>
 <pre class="r"><code>  not_infected_plants_after_prophy_R &lt;- W
@@ -850,47 +851,64 @@ make_variables(estimate_read_csv(input_table))</code></pre>
 
   for (i in 2:length(infected_plant_number_R)){
     infected_plant_number_R[i] &lt;- infected_plant_number_R[i-1] + risk_per_month[i]*
-      (original_plant_number - infected_plant_number_R[i-1])}
-  
-  for (j in 2:length(not_infected_plants_after_prophy_R)) {
+      (original_plant_number - infected_plant_number_R[i-1])}</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 494402.9 658033.1 738282.4
+##  [8] 763283.6 763283.6 763283.6 763283.6 763283.6</code></pre>
+<pre class="r"><code>  for (j in 2:length(not_infected_plants_after_prophy_R)) {
     not_infected_plants_after_prophy_R[j] &lt;- not_infected_plants_after_prophy_R[j-1] + effect_application_R[j]*
-      (infected_plant_number_R[j] - not_infected_plants_after_prophy_R[j-1])}
-  
-  still_infected_plants_R &lt;- infected_plant_number_R - not_infected_plants_after_prophy_R
-  
-  for (k in 2:length(symptomatic_plants_R)) {
+      (infected_plant_number_R[j] - not_infected_plants_after_prophy_R[j-1])}</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 268034.5 383610.3 488717.1
+##  [8] 488717.1 488717.1 488717.1 488717.1 488717.1</code></pre>
+<pre class="r"><code>  still_infected_plants_R &lt;- infected_plant_number_R - not_infected_plants_after_prophy_R</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 226368.4 274422.8 249565.3
+##  [8] 274566.5 274566.5 274566.5 274566.5 274566.5</code></pre>
+<pre class="r"><code>  for (k in 2:length(symptomatic_plants_R)) {
     symptomatic_plants_R[k] &lt;- symptomatic_plants_R[k-1] + fungus_possibility_R[k]*
-      (still_infected_plants_R[k] - symptomatic_plants_R[k-1])}
-  
-  for (l in 2:length(detected_plants_after_monitoring_R)) {
+      (still_infected_plants_R[k] - symptomatic_plants_R[k-1])}</code></pre>
+<pre><code>##  [1]      0.0      0.0      0.0      0.0 105942.4 187857.3 211924.5
+##  [8] 245679.6 245679.6 245679.6 245679.6 245679.6</code></pre>
+<pre class="r"><code>  for (l in 2:length(detected_plants_after_monitoring_R)) {
     detected_plants_after_monitoring_R[l] &lt;- detected_plants_after_monitoring_R[l-1] + detection_factor_R[l]*
-      (symptomatic_plants_R[l] - detected_plants_after_monitoring_R[l-1])}
-  
-  symptomatic_plants_after_monitoring_R &lt;- symptomatic_plants_R - detected_plants_after_monitoring_R
-  
-  for (m in 2:length(getting_again_sick_plants_R)) {
+      (symptomatic_plants_R[l] - detected_plants_after_monitoring_R[l-1])}</code></pre>
+<pre><code>##  [1]      0.00      0.00      0.00      0.00  86734.22 181746.75 208072.26
+##  [8] 243634.71 243634.71 243634.71 243634.71 243634.71</code></pre>
+<pre class="r"><code>  symptomatic_plants_after_monitoring_R &lt;- symptomatic_plants_R - detected_plants_after_monitoring_R</code></pre>
+<pre><code>##  [1]     0.000     0.000     0.000     0.000 19208.161  6110.547  3852.244
+##  [8]  2044.857  2044.857  2044.857  2044.857  2044.857</code></pre>
+<pre class="r"><code>  for (m in 2:length(getting_again_sick_plants_R)) {
     getting_again_sick_plants_R[m] &lt;- getting_again_sick_plants_R[m-1] + disease_expansion_factor_R[m]*
-      (symptomatic_plants_after_monitoring_R[m] - getting_again_sick_plants_R[m-1])}
-  
-  all_symptomatic_plants_R &lt;- symptomatic_plants_after_monitoring_R + getting_again_sick_plants_R
-  
-  for (n in 2:length(healthy_plants_after_fungus_fight_R)) {
+      (symptomatic_plants_after_monitoring_R[m] - getting_again_sick_plants_R[m-1])}</code></pre>
+<pre><code>##  [1]    0.000    0.000    0.000    0.000 1234.523 1604.818 1767.322
+##  [8] 1788.318 1788.318 1788.318 1788.318 1788.318</code></pre>
+<pre class="r"><code>  all_symptomatic_plants_R &lt;- symptomatic_plants_after_monitoring_R + getting_again_sick_plants_R</code></pre>
+<pre><code>##  [1]     0.000     0.000     0.000     0.000 20442.684  7715.365  5619.566
+##  [8]  3833.175  3833.175  3833.175  3833.175  3833.175</code></pre>
+<pre class="r"><code>  for (n in 2:length(healthy_plants_after_fungus_fight_R)) {
     healthy_plants_after_fungus_fight_R[n] &lt;- healthy_plants_after_fungus_fight_R[n-1] + fungus_fight_effect_R[n]*
       (all_symptomatic_plants_R[n] - healthy_plants_after_fungus_fight_R[n-1])}</code></pre>
+<pre><code>##  [1]     0.000     0.000     0.000     0.000 15077.384 10468.227  7474.173
+##  [8]  5331.286  5331.286  5331.286  5331.286  5331.286</code></pre>
 <p>Define the number of infected plants, direct plant losses and actual saleable plants for reduced prophy</p>
-<pre class="r"><code>  final_fungus_infected_plants_R &lt;- all_symptomatic_plants_R[12] - healthy_plants_after_fungus_fight_R[12]
-  
-  direct_plant_losses_R &lt;- detected_plants_after_monitoring_R[12]
-  
-  actual_saleable_Callunas_R &lt;- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)</code></pre>
+<pre class="r"><code>  final_fungus_infected_plants_R &lt;- all_symptomatic_plants_R[12] - healthy_plants_after_fungus_fight_R[12]</code></pre>
+<pre><code>## [1] -1498.111</code></pre>
+<pre class="r"><code>  direct_plant_losses_R &lt;- detected_plants_after_monitoring_R[12]</code></pre>
+<pre><code>## [1] 243634.7</code></pre>
+<pre class="r"><code>  actual_saleable_Callunas_R &lt;- original_plant_number - (final_fungus_infected_plants_R + direct_plant_losses_R)</code></pre>
+<pre><code>## [1] 534319.8</code></pre>
 <p>Calculation of Calluna monetary value for NORMAL prophy cultivation Differ between saleable, sorted out and not saleable plants after cultivation time</p>
-<pre class="r"><code>  value_saleable_plants_N &lt;- actual_saleable_Callunas_N * value_of_saleable_Calluna
-  value_of_sorted_out_plants_N &lt;- direct_plant_losses_N * value_sorted_out_Calluna
-  value_of_not_saleable_plants_N &lt;- final_fungus_infected_plants_N * value_not_saleable_Calluna</code></pre>
+<pre class="r"><code>  value_saleable_plants_N &lt;- actual_saleable_Callunas_N * value_of_saleable_Calluna</code></pre>
+<pre><code>## [1] 418408.3</code></pre>
+<pre class="r"><code>  value_of_sorted_out_plants_N &lt;- direct_plant_losses_N * value_sorted_out_Calluna</code></pre>
+<pre><code>## [1] 9266.202</code></pre>
+<pre class="r"><code>  value_of_not_saleable_plants_N &lt;- final_fungus_infected_plants_N * value_not_saleable_Calluna</code></pre>
+<pre><code>## [1] 14389.5</code></pre>
 <p>Calculation of Calluna monetary value for REDUCED prophy cultivation Differ between saleable, sorted out and not saleable plants after cultivation time</p>
-<pre class="r"><code>  value_saleable_plants_R &lt;- actual_saleable_Callunas_R * value_of_saleable_Calluna
-  value_of_sorted_out_plants_R &lt;- direct_plant_losses_R * value_sorted_out_Calluna
-  value_of_not_saleable_plants_R &lt;- final_fungus_infected_plants_R * value_not_saleable_Calluna</code></pre>
+<pre class="r"><code>  value_saleable_plants_R &lt;- actual_saleable_Callunas_R * value_of_saleable_Calluna</code></pre>
+<pre><code>## [1] 322281.7</code></pre>
+<pre class="r"><code>  value_of_sorted_out_plants_R &lt;- direct_plant_losses_R * value_sorted_out_Calluna</code></pre>
+<pre><code>## [1] 36916.2</code></pre>
+<pre class="r"><code>  value_of_not_saleable_plants_R &lt;- final_fungus_infected_plants_R * value_not_saleable_Calluna</code></pre>
+<pre><code>## [1] -997.4662</code></pre>
 <p>List up yearly costs for whole production area for NORMAL prophy</p>
 <pre class="r"><code>  costs_per_year_N &lt;- (value_of_one_new_plant * original_plant_number) +
     value_of_sorted_out_plants_N +
@@ -901,11 +919,14 @@ make_variables(estimate_read_csv(input_table))</code></pre>
    (costs_monitoring_per_ha_month * sum(W) * production_area) +
     costs_staff +
     yearly_costs_of_direct_fungus_fight_N * production_area</code></pre>
+<pre><code>## [1] 339491.6</code></pre>
 <p>List up the benefits for each year for whole production area for normal application</p>
 <pre class="r"><code>  benefits_per_year_N &lt;- value_saleable_plants_N</code></pre>
+<pre><code>## [1] 418408.3</code></pre>
 <p>List up costs for each year for whole production area for reduced application. Optimizing in monitoring leads to higher costs per hectar because of more time and staff use. Threshold is defined from 1 - 3 ha production area</p>
 <pre class="r"><code>  costs_staff &lt;- ifelse(production_area &gt; threshold_big_area_more_staff, costs_staff + 
                           costs_more_staff, costs_staff)</code></pre>
+<pre><code>## [1] 156404.9</code></pre>
 <p>List up yearly costs for whole production area for REDUCED prophy</p>
 <pre class="r"><code>  costs_per_year_R &lt;- (value_of_one_new_plant * original_plant_number) +
     value_of_sorted_out_plants_R +
@@ -917,13 +938,17 @@ make_variables(estimate_read_csv(input_table))</code></pre>
     additional_costs_more_monitoring_per_ha * production_area +
     costs_staff +
     yearly_costs_of_direct_fungus_fight_R * production_area</code></pre>
+<pre><code>## [1] 417504.1</code></pre>
 <p>List up the benefits for each year for whole production area for reduced application</p>
 <pre class="r"><code>  benefits_per_year_R &lt;- value_saleable_plants_R</code></pre>
+<pre><code>## [1] 322281.7</code></pre>
 <p>Benefits and Output</p>
 <p>Define all benefits and costs for NORMAL PROPHY APPLICATION Define all benefits and costs for REDUCED PROPHY APPLICATION</p>
 <p>Just change N to R or vice versa</p>
-<pre class="r"><code>  benefits &lt;- benefits_per_year_R
-  costs &lt;- costs_per_year_R</code></pre>
+<pre class="r"><code>  benefits &lt;- benefits_per_year_R</code></pre>
+<pre><code>## [1] 322281.7</code></pre>
+<pre class="r"><code>costs &lt;- costs_per_year_R</code></pre>
+<pre><code>## [1] 417504.1</code></pre>
 <p>Cashflow, Results and End of Function</p>
 <pre class="r"><code>  cashflow &lt;- benefits - costs
   NPV &lt;- decisionSupport::discount(x= cashflow, discount_rate = discount_rate, calculate_NPV = TRUE)
@@ -931,7 +956,7 @@ make_variables(estimate_read_csv(input_table))</code></pre>
   
   return(list(NetPresentValue = NPV))</code></pre>
 <pre><code>## $NetPresentValue
-## [1] 449153.6</code></pre>
+## [1] -95222.38</code></pre>
 </div>
 
 
