@@ -23,6 +23,7 @@ effect_six_prophy_application,Krankheits-Reduzierungspotential von sechs prophyl
 effect_seven_prophy_application,Krankheits-Reduzierungspotential von sieben prophylaktischen Applikationen pro Monat (in %)
 effect_eight_prophy_application,Krankheits-Reduzierungspotential von acht prophylaktischen Applikationen pro Monat (in %)
 value_of_saleable_Calluna,Wert einer verkäuflichen Callune (in €)
+value_of_saleable_more_sustainable_Calluna,Wert einer verkäuflichen nachhaltiger kultivierten Callune (in €)
 value_not_saleable_Calluna,"Der Wert einer Callune, die fertig produziert wurde, aber aufgrund schlechter Qualität nicht mehr verkauft werden kann (in €)"
 value_sorted_out_Calluna,"Wert einer aussortierten Callune, die während der Kultivierung erkrankt ist weggeschmissen werden muss (in €)"
 value_of_one_new_plant,"Wert des neuen Pflanzenmaterials, das jedes Jahr neu hinzu gekauft wird (in €)"
@@ -37,3 +38,9 @@ additional_costs_more_monitoring_per_ha,Zusätzliche Kosten für zusätzliches Moni
 yearly_costs_of_direct_fungus_fight_N,Jährliche Kosten der direkten Pilzbekämpfung nach einer genutzten normalen prophylaktischen Behandlungsstrategie (in € /ha)
 yearly_costs_of_direct_fungus_fight_R,Jährliche Kosten der direkten Pilzbekämpfung nach einer genutzten reduzierten prophylaktischen Behandlungsstrategie (in € / ha)
 cost_one_prophy_application,Kosten für eine prophylaktische Pflanzenschutz Applikation (in € / ha)
+detection_factor_MP,Rate wieviel % der Pflanzen bei einem Monitoring Plan als krank identifiziert werden (in %)
+fungus_fight_effect_MP,Effekt einer direkten Pilzbekämpfung auf die erkrankten Pflanzen in Prozent beim Monitoring Plan (in %)
+amount_of_samples_MP,Anteil der Pflanzenverluste aufgrund von Beprobungen im Monitoring Plan (%/ha)
+costs_per_sample_MP,Kosten pro getätigter Pflanzen Beprobung beim Monitoring Plan (€)
+savings_due_to_MP,Einsparungen aufgrund des vorher durchgeführten Monitoring Plans (€ / ha)
+costs_monitoring_plan_per_ha,Kosten für Monitoring Plan pro Jahr (in €/ha)

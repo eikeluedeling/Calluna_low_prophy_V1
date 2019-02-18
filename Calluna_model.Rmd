@@ -56,6 +56,15 @@ Define risky months (May to August)
 ```{r, echo=FALSE}
   W
 ```
+
+Define months where detection rate is increased (MONITORING PLAN before plant pots are placed apart) (May to June)
+```{r}
+  MPD <- c(0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)
+```
+
+```{r, echo=FALSE}
+  MPD 
+```
 Simulate the infection risk for each month under uncertainty
 ```{r}
   risk_per_month <- vv(infection_risk, var_CV, 12)* W %>%
@@ -141,6 +150,84 @@ Calculate risks and factors for REDUCED prophylactic application
   fungus_fight_effect_R
 ```
 
+Calculate risks and factors for MONITORING PLAN and NORMAL prophylactic application.
+Detection_factor and fungus_fight_effect differ because of Monitoring plan and the
+possibility of higher detection rate and more specific fungus fight management
+NORMAL and REDUCED prophylactic pesticide application costs in Calluna production system per year
+```{r}
+  fungus_possibility_MPN <- vv(fungus_possibility_N, var_CV, 12)* W %>%
+    sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  fungus_possibility_MPN
+```
+
+```{r}
+  detection_factor_MPN <- vv(detection_factor_MP, var_CV, 12)* W %>%
+    sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  detection_factor_MPN
+```
+
+```{r}
+  disease_expansion_factor_MPN <- vv(disease_expansion_factor_N, var_CV, 12)* W %>%
+    sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  disease_expansion_factor_MPN
+```
+
+```{r}
+  fungus_fight_effect_MPN <- vv(fungus_fight_effect_MP, var_CV, 12)* W %>%
+    sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  fungus_fight_effect_MPN
+```
+
+Calculate risks and factors for MONITORING PLAN and REDUCED prophylactic application.
+Detection_factor and fungus_fight_effect differ because of Monitoring plan and the
+possibility of higher detection rate and more specific fungus fight management
+```{r}
+  fungus_possibility_MPR <- vv(fungus_possibility_R, var_CV, 12)* W %>%
+  sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  fungus_possibility_MPR
+```
+
+```{r}
+  detection_factor_MPR <- vv(detection_factor_MP, var_CV, 12)* W %>%
+  sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  detection_factor_MPR
+```
+
+```{r}
+  disease_expansion_factor_MPR <- vv(disease_expansion_factor_R, var_CV, 12)* W %>%
+    sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  disease_expansion_factor_MPR
+```
+
+```{r}
+  fungus_fight_effect_MPR <- vv(fungus_fight_effect_MP, var_CV, 12)* W %>%
+  sapply(., function(x) max(c(min(c(1,x)),0)))
+```
+
+```{r, echo=FALSE}
+  fungus_fight_effect_MPR
+```
 NORMAL and REDUCED prophylactic pesticide application costs in Calluna production system per year
 ```{r}
   costs_yearly_prophy_application_N <- round((number_yearly_prophy_application_N),digits=0) * 
@@ -158,6 +245,25 @@ NORMAL and REDUCED prophylactic pesticide application costs in Calluna productio
 
 ```{r, echo=FALSE}
   costs_yearly_prophy_application_R
+```
+
+NORMAL and REDUCED prophylactic application costs for MONITORING PLAN in Calluna production system per year
+```{r}
+  costs_yearly_prophy_application_MPN <- round((number_yearly_prophy_application_N),digits=0) * 
+    cost_one_prophy_application * production_area
+```
+
+```{r, echo=FALSE}
+  costs_yearly_prophy_application_MPN
+```
+
+```{r}
+  costs_yearly_prophy_application_MPR <- round((number_yearly_prophy_application_R),digits=0) * 
+    cost_one_prophy_application * production_area
+```
+
+```{r, echo=FALSE}
+  costs_yearly_prophy_application_MPR
 ```
 
 Use function to split prophylactic application sum per year in accidentally selected application quantity per month
@@ -224,6 +330,23 @@ Define effect of REDUCED prophylactic pesticide application (potential to reduce
 
 ```{r, echo=FALSE}
   effect_application_R
+```
+
+Define effect of NORMAL and REDUCED prophylactic pesticide application for MONITORING PLAN (potential to reduce fungus onset)
+```{r}
+  effect_application_MPN <- effect_application_N
+```
+
+```{r, echo=FALSE}
+  effect_application_MPN
+```
+
+```{r}
+  effect_application_MPR <- effect_application_R
+```
+
+```{r, echo=FALSE}
+  effect_application_MPR
 ```
 
 Now calculation for the normal prophylactic application scenario
@@ -475,6 +598,264 @@ Define the number of infected plants, direct plant losses and actual saleable pl
   actual_saleable_Callunas_R
 ```
 
+All used vectors need to have the same length
+```{r}
+  not_infected_plants_after_prophy_MPN <- W
+  symptomatic_plants_MPN <- W
+  detected_plants_after_monitoring_MPN <- MPD
+  healthy_plants_after_fungus_fight_MPN <- W
+  getting_again_sick_plants_MPN <- W
+```
+
+Simulate all probabilities of infection, effect of prophylactic applications,
+number of symptomatic plants, monitoring and detection of sick plants and reinfection 
+to get number of detected, not saleable and healthy plants for NORMAL prophy and MONITORING PLAN
+```{r}
+  infected_plant_number_MPN <- original_plant_number * risk_per_month
+```
+
+```{r, echo=FALSE}
+  infected_plant_number_MPN
+```
+
+```{r}
+  for (i in 2:length(infected_plant_number_MPN)){ 
+    infected_plant_number_MPN[i] <- infected_plant_number_MPN[i-1] + risk_per_month[i]*
+      (original_plant_number - infected_plant_number_MPN[i-1])}
+```
+
+```{r, echo=FALSE}
+  infected_plant_number_MPN
+```
+
+```{r}
+  for (j in 2:length(not_infected_plants_after_prophy_MPN)) {
+    not_infected_plants_after_prophy_MPN[j] <- not_infected_plants_after_prophy_MPN[j-1] + effect_application_MPN[j]*
+      (infected_plant_number_MPN[j] - not_infected_plants_after_prophy_MPN[j-1])}
+```
+
+```{r, echo=FALSE}
+  not_infected_plants_after_prophy_MPN
+```
+
+```{r}
+   still_infected_plants_MPN <- infected_plant_number_MPN - not_infected_plants_after_prophy_MPN
+```
+
+```{r, echo=FALSE}
+  still_infected_plants_MPN
+```
+
+```{r}
+  for (k in 2:length(symptomatic_plants_MPN)) {
+    symptomatic_plants_MPN[k] <- symptomatic_plants_MPN[k-1] + fungus_possibility_MPN[k]*
+      (still_infected_plants_MPN[k] - symptomatic_plants_MPN[k-1])}
+```
+
+```{r, echo=FALSE}
+  symptomatic_plants_MPN
+```
+
+```{r}
+  for (l in 2:length(detected_plants_after_monitoring_MPN)) {
+    detected_plants_after_monitoring_MPN[l] <- detected_plants_after_monitoring_MPN[l-1] + detection_factor_MPN[l]*
+      (symptomatic_plants_MPN[l] - detected_plants_after_monitoring_MPN[l-1])}
+```
+
+```{r, echo=FALSE}
+  detected_plants_after_monitoring_MPN
+```
+
+```{r}
+  symptomatic_plants_after_monitoring_MPN <- symptomatic_plants_MPN - detected_plants_after_monitoring_MPN
+```
+
+```{r, echo=FALSE}
+  symptomatic_plants_after_monitoring_MPN
+```
+
+```{r}
+  for (m in 2:length(getting_again_sick_plants_MPN)) {
+    getting_again_sick_plants_MPN[m] <- getting_again_sick_plants_MPN[m-1] + disease_expansion_factor_MPN[m]*
+      (symptomatic_plants_after_monitoring_MPN[m] - getting_again_sick_plants_MPN[m-1])}
+```
+
+```{r, echo=FALSE}
+  getting_again_sick_plants_MPN
+```
+
+```{r}
+  all_symptomatic_plants_MPN <- symptomatic_plants_after_monitoring_MPN + getting_again_sick_plants_MPN
+```
+
+```{r, echo=FALSE}
+  all_symptomatic_plants_MPN
+```
+
+```{r}
+  for (n in 2:length(healthy_plants_after_fungus_fight_MPN)) {
+    healthy_plants_after_fungus_fight_MPN[n] <- healthy_plants_after_fungus_fight_MPN[n-1] + fungus_fight_effect_MPN[n]*
+      (all_symptomatic_plants_MPN[n] - healthy_plants_after_fungus_fight_MPN[n-1])}
+```
+
+```{r, echo=FALSE}
+  healthy_plants_after_fungus_fight_MPN
+```
+
+```{r}
+  final_fungus_infected_plants_MPN <- all_symptomatic_plants_MPN[12] - healthy_plants_after_fungus_fight_MPN[12]
+```
+
+```{r, echo=FALSE}
+  final_fungus_infected_plants_MPN
+```
+
+```{r}
+  direct_plant_losses_MPN <- detected_plants_after_monitoring_MPN[12]
+```
+
+```{r, echo=FALSE}
+  direct_plant_losses_MPN
+```
+
+```{r}
+  actual_saleable_Callunas_MPN <- original_plant_number - (final_fungus_infected_plants_MPN + direct_plant_losses_MPN)
+```
+
+```{r, echo=FALSE}
+  actual_saleable_Callunas_MPN
+```
+
+All used vectors need to have the same length
+
+```{r}
+  not_infected_plants_after_prophy_MPR <- W
+  symptomatic_plants_MPR <- W
+  detected_plants_after_monitoring_MPR <- MPD
+  healthy_plants_after_fungus_fight_MPR <- W
+  getting_again_sick_plants_MPR <- W
+```
+
+Simulate all probabilities of infection, effect of prophylactic applications,
+number of symptomatic plants, monitoring and detection of sick plants and reinfection 
+to get number of detected, not saleable and healthy plants for REDUCED prophy and MONITORING PLAN
+```{r}
+  infected_plant_number_MPR <- original_plant_number * risk_per_month
+```
+
+```{r, echo=FALSE}
+  infected_plant_number_MPR
+```
+
+```{r}
+  for (i in 2:length(infected_plant_number_MPR)){ 
+    infected_plant_number_MPR[i] <- infected_plant_number_MPR[i-1] + risk_per_month[i]*
+      (original_plant_number - infected_plant_number_MPR[i-1])}
+```
+
+```{r, echo=FALSE}
+  infected_plant_number_MPR
+```
+
+```{r}
+  for (j in 2:length(not_infected_plants_after_prophy_MPR)) {
+    not_infected_plants_after_prophy_MPR[j] <- not_infected_plants_after_prophy_MPR[j-1] + effect_application_MPR[j]*
+      (infected_plant_number_MPR[j] - not_infected_plants_after_prophy_MPR[j-1])}
+```
+
+```{r, echo=FALSE}
+  not_infected_plants_after_prophy_MPR
+```
+
+```{r}
+  still_infected_plants_MPR <- infected_plant_number_MPR - not_infected_plants_after_prophy_MPR
+```
+
+```{r, echo=FALSE}
+  still_infected_plants_MPR
+```
+
+```{r}
+  for (k in 2:length(symptomatic_plants_MPR)) {
+    symptomatic_plants_MPR[k] <- symptomatic_plants_MPR[k-1] + fungus_possibility_MPR[k]*
+      (still_infected_plants_MPR[k] - symptomatic_plants_MPR[k-1])}
+```
+
+```{r, echo=FALSE}
+  symptomatic_plants_MPR
+```
+
+```{r}
+  for (l in 2:length(detected_plants_after_monitoring_MPR)) {
+    detected_plants_after_monitoring_MPR[l] <- detected_plants_after_monitoring_MPR[l-1] + detection_factor_MPR[l]*
+      (symptomatic_plants_MPR[l] - detected_plants_after_monitoring_MPR[l-1])}
+```
+
+```{r, echo=FALSE}
+  detected_plants_after_monitoring_MPR
+```
+
+```{r}
+  symptomatic_plants_after_monitoring_MPR <- symptomatic_plants_MPR - detected_plants_after_monitoring_MPR
+```
+
+```{r, echo=FALSE}
+  symptomatic_plants_after_monitoring_MPR
+```
+
+
+```{r}
+  for (m in 2:length(getting_again_sick_plants_MPR)) {
+    getting_again_sick_plants_MPR[m] <- getting_again_sick_plants_MPR[m-1] + disease_expansion_factor_MPR[m]*
+      (symptomatic_plants_after_monitoring_MPR[m] - getting_again_sick_plants_MPR[m-1])}
+```
+
+```{r, echo=FALSE}
+  getting_again_sick_plants_MPR
+```
+
+```{r}
+  all_symptomatic_plants_MPR <- symptomatic_plants_after_monitoring_MPR + getting_again_sick_plants_MPR
+```
+
+```{r, echo=FALSE}
+  all_symptomatic_plants_MPR
+```
+
+```{r}
+  for (n in 2:length(healthy_plants_after_fungus_fight_MPR)) {
+    healthy_plants_after_fungus_fight_MPR[n] <- healthy_plants_after_fungus_fight_MPR[n-1] + fungus_fight_effect_MPR[n]*
+      (all_symptomatic_plants_MPR[n] - healthy_plants_after_fungus_fight_MPR[n-1])}
+```
+
+```{r, echo=FALSE}
+  healthy_plants_after_fungus_fight_MPR
+```
+
+```{r}
+  final_fungus_infected_plants_MPR <- all_symptomatic_plants_MPR[12] - healthy_plants_after_fungus_fight_MPR[12]
+```
+
+```{r, echo=FALSE}
+  final_fungus_infected_plants_MPR
+```
+
+```{r}
+  direct_plant_losses_MPR <- detected_plants_after_monitoring_MPR[12]
+```
+
+```{r, echo=FALSE}
+  direct_plant_losses_MPR
+```
+
+```{r}
+  actual_saleable_Callunas_MPR <- original_plant_number - (final_fungus_infected_plants_MPR + direct_plant_losses_MPR)
+```
+
+```{r, echo=FALSE}
+  actual_saleable_Callunas_MPR
+```
+
 Calculation of Calluna monetary value for NORMAL prophy cultivation
 Differ between saleable, sorted out and not saleable plants after cultivation time
 ```{r}
@@ -504,7 +885,7 @@ Differ between saleable, sorted out and not saleable plants after cultivation ti
 Calculation of Calluna monetary value for REDUCED prophy cultivation
 Differ between saleable, sorted out and not saleable plants after cultivation time
 ```{r}
-  value_saleable_plants_R <- actual_saleable_Callunas_R * value_of_saleable_Calluna
+  value_saleable_plants_R <- actual_saleable_Callunas_R * value_of_saleable_more_sustainable_Calluna
 ```
 
 ```{r, echo=FALSE}
@@ -525,6 +906,56 @@ Differ between saleable, sorted out and not saleable plants after cultivation ti
 
 ```{r, echo=FALSE}
   value_of_not_saleable_plants_R
+```
+
+Calculation of Calluna monetary value for NORMAL and REDUCED prophy with MONITORING PLAN cultivation
+Differ between saleable, sorted out and not saleable plants after cultivation time
+```{r}
+  value_saleable_plants_MPN <- actual_saleable_Callunas_MPN * value_of_saleable_Calluna
+```
+
+```{r, echo=FALSE}
+  value_saleable_plants_MPN
+```
+
+```{r}
+  value_of_sorted_out_plants_MPN <- direct_plant_losses_MPN * value_sorted_out_Calluna
+```
+
+```{r, echo=FALSE}
+  value_of_sorted_out_plants_MPN
+```
+
+```{r}  
+  value_of_not_saleable_plants_MPN <- final_fungus_infected_plants_MPN * value_not_saleable_Calluna
+```
+
+```{r}
+  value_of_not_saleable_plants_MPN
+```
+
+```{r, echo=FALSE}
+  value_saleable_plants_MPR <- actual_saleable_Callunas_MPR * value_of_saleable_more_sustainable_Calluna
+```
+
+```{r, echo=FALSE}
+  value_saleable_plants_MPR
+```
+
+```{r}
+  value_of_sorted_out_plants_MPR <- direct_plant_losses_MPR * value_sorted_out_Calluna
+```
+
+```{r, echo=FALSE}
+  value_of_sorted_out_plants_MPR
+```
+
+```{r, echo=FALSE}
+  value_of_not_saleable_plants_MPR <- final_fungus_infected_plants_MPR * value_not_saleable_Calluna
+```
+
+```{r}
+  value_of_not_saleable_plants_MPR
 ```
 
 List up yearly costs for whole production area for NORMAL prophy
@@ -592,12 +1023,71 @@ List up the benefits for each year for whole production area for reduced applica
   benefits_per_year_R
 ```
 
-Benefits and Output
+List up yearly costs for whole production area for NORMAL prophy and MONITORING PLAN
+For MONITORING PLAN also Lab costs (costs_per_sample) must be mentioned
+```{r}
+  costs_per_year_MPN <- (value_of_one_new_plant * original_plant_number) +
+    value_of_sorted_out_plants_MPN +
+    value_of_not_saleable_plants_MPN +
+   (direct_plant_losses_MPN * amount_of_samples_MP * costs_per_sample_MP) +
+    costs_water * production_area +
+    costs_yearly_prophy_application_MPN +
+    costs_normal_fertilizer * production_area +
+   (costs_monitoring_plan_per_ha * production_area) +
+    costs_staff +
+    yearly_costs_of_direct_fungus_fight_N * production_area
+```
+
+```{r, echo=FALSE}
+  costs_per_year_MPN
+```
+
+List up the benefits for each year for whole production area for NORMAL application
+and MONITORING PLAN. Producers say they have potential resource savings due to MP
+```{r}
+  benefits_per_year_MPN <- value_saleable_plants_MPN + (savings_due_to_MP * production_area)
+```
+
+```{r, echo=FALSE}
+  benefits_per_year_MPN
+```
+
+List up yearly costs for whole production area for REDUCED prophy and MONITORING PLAN####
+For MONITORING PLAN also Lab costs (costs_per_sample) must be mentioned
+```{r}
+  costs_per_year_MPR <- (value_of_one_new_plant * original_plant_number) +
+    value_of_sorted_out_plants_MPR +
+    value_of_not_saleable_plants_MPR +
+   (direct_plant_losses_MPR * amount_of_samples_MP * costs_per_sample_MP) +
+    costs_water * production_area +
+    costs_yearly_prophy_application_MPR +
+   (costs_normal_fertilizer + fertilizer_adjustment) * production_area +
+   (costs_monitoring_plan_per_ha * production_area) +
+    additional_costs_more_monitoring_per_ha * production_area +
+    costs_staff +
+    yearly_costs_of_direct_fungus_fight_R * production_area
+```
+
+```{r, echo=FALSE}
+  costs_per_year_MPR
+```
+
+List up the benefits for each year for whole production area for REDUCED application
+and MONITORING PLAN. Producers say they have potential resource savings due to MP 
+```{r}
+  benefits_per_year_MPR <- value_saleable_plants_MPR + (savings_due_to_MP * production_area)
+```
+
+```{r, echo=FALSE}
+  benefits_per_year_MPR
+```
+Benefits and outputs
   
-Define all benefits and costs for NORMAL PROPHY APPLICATION
-Define all benefits and costs for REDUCED PROPHY APPLICATION 
-  
-Just change N to R or vice versa 
+Define all benefits and costs for NORMAL PROPHY APPLICATION                         N
+Define all benefits and costs for REDUCED PROPHY APPLICATION                        R
+Define all benefits and costs for NORMAL PROPHY APPLICATION and MONITORING PLAN     MPN
+Define all benefits and costs for REDUCED PROPHY APPLICATION and MONITORING PLAN    MPR
+Just change the letters to get the prefered output 
 ```{r}  
   benefits <- benefits_per_year_R
 ```  
@@ -607,11 +1097,11 @@ Just change N to R or vice versa
 ```  
 
 ```{r}
-costs <- costs_per_year_R
+  costs <- costs_per_year_R
 ```
 
 ```{r, echo=FALSE}
-costs
+  costs
 ```
 
 Cashflow, Results and End of Function 
