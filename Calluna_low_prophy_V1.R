@@ -107,7 +107,7 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   # For NORMAL prophylactic application
   effect_application_N <- need.random.integers(0, round((number_yearly_prophy_application_N), digits = 0),
                                                4, round((number_yearly_prophy_application_N), digits = 0))* W
-  # For MONITORING PLAN wi
+
   # Define effect of NORMAL prophylactic pesticide application (potential to reduce fungus onset)
   # Estimated effect of fungus reduce potential are interlinked with each number of application per month  
   
