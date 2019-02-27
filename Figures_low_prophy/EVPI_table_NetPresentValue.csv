@@ -1,40 +1,45 @@
 "","thold","EVPI_do","EVPI_dont"
-"value_of_saleable_Calluna",0.663732212472056,24105.644038336,143675.168605406
-"number_yearly_prophy_application_R",0.662997458593407,27.7372873999836,82482.6659486315
+"amount_of_samples_MP",0.0485880390077937,29531.2858965164,147657.152902337
+"fungus_possibility_R",0.287095961253126,37110.7342584073,100864.598633716
+"value_of_saleable_more_sustainable_Calluna",1.04456567049557,81683.6112578821,97903.3041035467
+"value_sorted_out_Calluna",0.184995945311318,927.50157547626,88644.2271744253
+"infection_risk",0.330592693760991,55076.2797707487,78802.191785575
+"costs_per_sample_MP",36.7081142875829,21586.5610676039,62108.0523407674
+"detection_factor_MP",0.397555804966128,41664.6769253912,60737.3220895734
+"number_yearly_prophy_application_R",6.58686270914256,54916.4174488591,54376.4779122795
+"value_of_one_new_plant",0.0542689233737869,2904.70347492185,50551.1469443926
+"costs_staff",43367.3890662844,3569.73510062114,46314.6491683544
+"costs_monitoring_plan_per_ha",2339.00162014077,2281.08655661766,33007.1857429917
+"costs_normal_fertilizer",3910.06632848475,1916.96452151679,32241.7566410206
+"costs_more_staff",27034.7347927318,15.1178349353877,27643.7425352043
+"savings_due_to_MP",25345.5914744925,24531.8013450267,8113.59618338863
+"fungus_fight_effect_MP",0.78481609348679,26414.9328957654,993.77217964958
 "discount_rate",no relationship,0,0
-"years",no variation,0,0
 "production_area",no variation,0,0
-"infection_risk",NA,0,0
 "plants_per_ha",NA,0,0
-"total_failure_risk",no relationship,0,0
 "fungus_possibility_N",no relationship,0,0
-"fungus_possibility_R",NA,0,0
 "disease_expansion_factor_N",no relationship,0,0
 "disease_expansion_factor_R",no relationship,0,0
 "detection_factor_N",no relationship,0,0
-"detection_factor_R",NA,0,0
+"detection_factor_R",no relationship,0,0
 "fungus_fight_effect_N",no relationship,0,0
-"fungus_fight_effect_R",NA,0,0
+"fungus_fight_effect_R",no relationship,0,0
 "var_CV",no relationship,0,0
 "number_yearly_prophy_application_N",no relationship,0,0
 "effect_one_prophy_application",NA,0,0
-"effect_two_prophy_application",NA,0,0
-"effect_three_prophy_application",no relationship,0,0
+"effect_two_prophy_application",no relationship,0,0
+"effect_three_prophy_application",NA,0,0
 "effect_four_prophy_application",no relationship,0,0
 "effect_five_prophy_application",no relationship,0,0
 "effect_six_prophy_application",no relationship,0,0
-"effect_seven_prophy_application",no relationship,0,0
+"effect_seven_prophy_application",NA,0,0
 "effect_eight_prophy_application",NA,0,0
+"value_of_saleable_Calluna",no relationship,0,0
 "value_not_saleable_Calluna",no relationship,0,0
-"value_sorted_out_Calluna",NA,0,0
-"value_of_one_new_plant",NA,0,0
 "fertilizer_adjustment",no relationship,0,0
-"costs_normal_fertilizer",NA,0,0
-"costs_water",NA,0,0
-"costs_staff",NA,0,0
-"costs_more_staff",NA,0,0
+"costs_water",no relationship,0,0
 "threshold_big_area_more_staff",no relationship,0,0
-"costs_monitoring_per_ha_month",NA,0,0
+"costs_monitoring_per_ha_month",no relationship,0,0
 "additional_costs_more_monitoring_per_ha",no relationship,0,0
 "yearly_costs_of_direct_fungus_fight_N",no relationship,0,0
 "yearly_costs_of_direct_fungus_fight_R",no relationship,0,0

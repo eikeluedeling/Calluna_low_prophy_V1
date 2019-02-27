@@ -19,36 +19,36 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   
   # Simulate the infection risk for each month under uncertainty
   risk_per_month <- vv(infection_risk, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   #### Settings for factors in % so that they will not be higher or lower than 1 ####
   # random values are selected out of pre-defined intervalls
   
   #### Calculate risks and factors for NORMAL prophylactic application ####
   fungus_possibility_N <- vv(fungus_possibility_N, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
 
   detection_factor_N <- vv(detection_factor_N, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   disease_expansion_factor_N <- vv(disease_expansion_factor_N, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   fungus_fight_effect_N <- vv(fungus_fight_effect_N, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   #### Calculate risks and factors for REDUCED prophylactic application ####
   fungus_possibility_R <- vv(fungus_possibility_R, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   detection_factor_R <- vv(detection_factor_R, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   disease_expansion_factor_R <- vv(disease_expansion_factor_R, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   fungus_fight_effect_R <- vv(fungus_fight_effect_R, var_CV, 12)* W %>%
-  sapply(., function(x) max(c(min(c(1,x)),0)))
+    sapply(., function(x) max(c(min(c(1,x)),0)))
   
   #### Calculate risks and factors for MONITORING PLAN and NORMAL prophylactic application ####
   # detection_factor and fungus_fight_effect differ because of Monitoring plan and the
@@ -97,8 +97,8 @@ Calluna_low_prophy_V1 <- function(x, varnames){
   # Use function to split prophylactic application sum per year in accidentally selected application quantity per month
   
   need.random.integers <- function(a,b,n,k){
-    # Finds n random integers in range a:b which sum to k
-    while(TRUE){
+    # Finds n random integers in range a:b which sum to k ### is this really working? Needs to be checked 
+    while(TRUE){   # what does while(TRUE) mean? TRUE is always TRUE...
       x <- sample(1:(k - n*a),n-1, replace = TRUE)
       x <- sort(x)
       x <- c(x,k-n*a) - c(0,x)
